@@ -106,7 +106,9 @@ void campo::regolamento() {
 	cout << "                            *************\n\n";
 	cout << "E' possibile muovere l'auto solo nelle direzioni destra -> e sinistra <-: \n\n";
 	cout << "A per far muovere l'auto a sinistra\n\n";
-	cout << "D per far muovere l'auto a destra!\n\n";
+	cout << "D per far muovere l'auto a destra\n\n";
+	cout << "W per far muovere l'auto in avanti!\n\n";
+
 }
 
 

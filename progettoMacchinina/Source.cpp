@@ -32,6 +32,9 @@ int main() {
 		case('D'):
 			c.muoviDestra();
 			break;
+		case('w'):
+		case('W'):
+			break;
 		default:
 			break;
 		}
