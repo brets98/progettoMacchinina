@@ -1,12 +1,6 @@
 #include "campo.h"
 #include <cstdlib>
 
-
-
-
-
-
-
 campo::campo(int a, int b, int p) {
 
 	campo::righe = a;//a sono le righe
@@ -66,7 +60,7 @@ void campo::stampa() {
 	}
 	for (i = campo::righe - 1; i >= 1; i--)
 	{
-		for (j = campo::colonne; j >= 1; j--)
+		for (j = campo::colonne - 15;  j >= 1; j--)
 		{
 			// aggiungere controllo collisioni 
 			if (campo::spazio[i][j] == 'O' || campo::spazio[i][j] == 'E' || campo::spazio[i][j] == 'S' || campo::spazio[i][j] == 'T' || campo::spazio[i][j] == 'V')
@@ -77,48 +71,6 @@ void campo::stampa() {
 
 				campo::spazio[i][j] = ' ';		
 			}
-			/* else if (campo::spazio[i][j] == 'E')
-			{
-				campo::spazio[i][j] = ' ';
-
-
-				if (i >= campo::macchina.riga - 1) // controllo che a livello della macchina cancellano le o deve controllare collisioni
-					campo::spazio[i + 1][j] = ' ';	// da migliorare perché cancella anche la macchina 
-				else
-					campo::spazio[i + 1][j] = 'E';
-			}
-			else if (campo::spazio[i][j] == 'S')
-			{
-				campo::spazio[i][j] = ' ';
-
-
-				if (i >= campo::macchina.riga - 1) // controllo che a livello della macchina cancellano le o deve controllare collisioni
-					campo::spazio[i + 1][j] = ' ';	// da migliorare perché cancella anche la macchina 
-				else
-					campo::spazio[i + 1][j] = 'S';
-			}
-			else if (campo::spazio[i][j] == 'T')
-			{
-				campo::spazio[i][j] = ' ';
-
-
-				if (i >= campo::macchina.riga - 1) // controllo che a livello della macchina cancellano le o deve controllare collisioni
-					campo::spazio[i + 1][j] = ' ';	// da migliorare perché cancella anche la macchina 
-				else
-					campo::spazio[i + 1][j] = 'T';
-			}
-			else if (campo::spazio[i][j] == 'V')
-			{
-				campo::spazio[i][j] = ' ';
-
-
-				if (i >= campo::macchina.riga - 1) // controllo che a livello della macchina cancellano le o deve controllare collisioni
-					campo::spazio[i + 1][j] = ' ';	// da migliorare perché cancella anche la macchina 
-				else
-					campo::spazio[i + 1][j] = 'V';
-			}
-
-			*/
 
 		}
 	}
@@ -218,6 +170,7 @@ void campo::muoviSinistra() {
 
 	if (campo::spazio[campo::macchina.riga][campo::macchina.colonna - 2] != '#')
 	{
+
 		campo::spazio[campo::macchina.riga - 1][campo::macchina.colonna] = ' ';
 		campo::spazio[campo::macchina.riga + 1][campo::macchina.colonna] = ' ';
 		campo::spazio[campo::macchina.riga][campo::macchina.colonna + 1] = ' ';
