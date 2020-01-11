@@ -64,7 +64,7 @@ void campo::stampa() {
 		}
 		cout << "\n";
 	}
-	for (i = campo::righe - 4; i >= 1; i--)
+	for (i = campo::righe - 1; i >= 1; i--)
 	{
 		for (j = campo::colonne; j >= 1; j--)
 		{
@@ -74,10 +74,10 @@ void campo::stampa() {
 				campo::spazio[i][j] = ' ';
 
 
-				if (i >= campo::macchina.riga - 1) // controllo che a livello della macchina cancellano le o deve controllare collisioni
-					campo::spazio[i + 1][j] = ' ';	// da migliorare perché cancella anche la macchina 
-				else
-					campo::spazio[i + 1][j] = 'O';
+				if (i <= campo::macchina.riga) // controllo che a livello della macchina cancellano le o deve controllare collisioni
+					campo::spazio[i + 1][j] = 'O'; // da migliorare perché cancella anche la macchina 
+				
+					
 			}
 		}
 	}

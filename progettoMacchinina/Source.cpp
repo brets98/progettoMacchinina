@@ -18,7 +18,7 @@ int main() {
 	{
 
 		system("cls");
-		c.aggiungiO();
+		c.aggiungiOstacoli();
 		c.stampa();
 
 		//controllo del movimento della macchina 

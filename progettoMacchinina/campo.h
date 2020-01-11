@@ -20,8 +20,10 @@ public:
 	void stampa();
 	void sigla();
 	void regolamento();
-	void sconfitta();//ancora da impplement
-	void aggiungiO();
+	void sconfitta();
+	void colpito();
+	//ancora da impplement
+	void aggiungiOstacoli();
 	void spostaO();
 	void scriviMacchina();
 	void scriviLevel();
