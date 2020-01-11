@@ -1,2 +1,6 @@
 ﻿  campo.cpp
+  Source.cpp
+c:\users\marti\source\repos\progettomacchinina\progettomacchinina\source.cpp(6): warning C4101: 'direzione': variabile locale senza riferimenti
+  Generazione del codice in corso...
+  LINK : C:\Users\marti\source\repos\progettoMacchinina\x64\Debug\progettoMacchinina.exe non trovato o non compilato dall'ultimo collegamento incrementale; verrà eseguito il collegamento completo
   progettoMacchinina.vcxproj -> C:\Users\marti\source\repos\progettoMacchinina\x64\Debug\progettoMacchinina.exe

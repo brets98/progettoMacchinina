@@ -21,8 +21,7 @@ public:
 	void sigla();
 	void regolamento();
 	void sconfitta();
-	void colpito();
-	//ancora da impplement
+	void colpito();//ancora da impplement
 	void aggiungiOstacoli();
 	void spostaO();
 	void scriviMacchina();

@@ -69,16 +69,57 @@ void campo::stampa() {
 		for (j = campo::colonne; j >= 1; j--)
 		{
 			// aggiungere controllo collisioni 
-			if (campo::spazio[i][j] == 'O')
+			if (campo::spazio[i][j] == 'O' || campo::spazio[i][j] == 'E' || campo::spazio[i][j] == 'S' || campo::spazio[i][j] == 'T' || campo::spazio[i][j] == 'V')
+			{
+				
+				if (i <= campo::macchina.riga) // controllo che a livello della macchina cancellano le o deve controllare collisioni
+					campo::spazio[i + 1][j] = campo::spazio[i][j]; // da migliorare perché cancella anche la macchina 
+
+				campo::spazio[i][j] = ' ';		
+			}
+			/* else if (campo::spazio[i][j] == 'E')
 			{
 				campo::spazio[i][j] = ' ';
 
 
-				if (i <= campo::macchina.riga) // controllo che a livello della macchina cancellano le o deve controllare collisioni
-					campo::spazio[i + 1][j] = 'O'; // da migliorare perché cancella anche la macchina 
-				
-					
+				if (i >= campo::macchina.riga - 1) // controllo che a livello della macchina cancellano le o deve controllare collisioni
+					campo::spazio[i + 1][j] = ' ';	// da migliorare perché cancella anche la macchina 
+				else
+					campo::spazio[i + 1][j] = 'E';
 			}
+			else if (campo::spazio[i][j] == 'S')
+			{
+				campo::spazio[i][j] = ' ';
+
+
+				if (i >= campo::macchina.riga - 1) // controllo che a livello della macchina cancellano le o deve controllare collisioni
+					campo::spazio[i + 1][j] = ' ';	// da migliorare perché cancella anche la macchina 
+				else
+					campo::spazio[i + 1][j] = 'S';
+			}
+			else if (campo::spazio[i][j] == 'T')
+			{
+				campo::spazio[i][j] = ' ';
+
+
+				if (i >= campo::macchina.riga - 1) // controllo che a livello della macchina cancellano le o deve controllare collisioni
+					campo::spazio[i + 1][j] = ' ';	// da migliorare perché cancella anche la macchina 
+				else
+					campo::spazio[i + 1][j] = 'T';
+			}
+			else if (campo::spazio[i][j] == 'V')
+			{
+				campo::spazio[i][j] = ' ';
+
+
+				if (i >= campo::macchina.riga - 1) // controllo che a livello della macchina cancellano le o deve controllare collisioni
+					campo::spazio[i + 1][j] = ' ';	// da migliorare perché cancella anche la macchina 
+				else
+					campo::spazio[i + 1][j] = 'V';
+			}
+
+			*/
+
 		}
 	}
 
@@ -116,11 +157,34 @@ void campo::colpito() { // ci sará una schermata quando l'auto viene colpita da 
 
 }
 
-void campo::aggiungiOstacoli() {
-	int j;
+
+// Lettere utilizzate = O E S T V
+
+void campo::aggiungiOstacoli() { 
+	int j;// decide dove piazzare l'ostacolo
+	int b;// decide che far stampare
+	char ost; 
+	b = 1 + rand() % 5;
+	switch (b) {
+	case 1:
+		ost = 'O';
+		break;
+	case 2:
+		ost = 'E';
+		break;
+	case 3:
+		ost = 'S';
+		break;
+	case 4:
+		ost = 'T';
+		break;
+	case 5:
+		ost = 'V';
+		break;	
+	}
 
 	j = 2 + rand() % 23;
-	campo::spazio[1][j] = 'O';
+	campo::spazio[1][j] = ost;
 
 }
 void campo::scriviMacchina()
