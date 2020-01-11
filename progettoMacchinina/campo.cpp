@@ -72,8 +72,10 @@ void campo::stampa() {
 			if (campo::spazio[i][j] == 'O')
 			{
 				campo::spazio[i][j] = ' ';
-				if (i >= campo::macchina.riga + 1)
-					campo::spazio[i + 1][j] = ' ';
+
+
+				if (i >= campo::macchina.riga - 1) // controllo che a livello della macchina cancellano le o deve controllare collisioni
+					campo::spazio[i + 1][j] = ' ';	// da migliorare perché cancella anche la macchina 
 				else
 					campo::spazio[i + 1][j] = 'O';
 			}
@@ -108,11 +110,11 @@ void campo::regolamento() {
 }
 
 
-void campo::sconfitta() {
+void campo::colpito() { // ci sará una schermata quando l'auto viene colpita da qualcosa 
 
 }
 
-void campo::aggiungiO() {
+void campo::aggiungiOstacoli() {
 	int j;
 
 	j = 2 + rand() % 23;
