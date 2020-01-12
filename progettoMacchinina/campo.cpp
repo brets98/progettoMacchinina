@@ -166,36 +166,48 @@ void campo::scriviLevel() {
 	campo::spazio[16][32] = '=';
 	campo::spazio[16][33] = '+';
 }
-void campo::muoviSinistra() {
+void campo::muoviMacchina(char l) {
+	switch (l) {
+	case ('a'):
+	case('A'):
+		if (campo::spazio[campo::macchina.riga][campo::macchina.colonna - 2] != '#')
+		{
 
-	if (campo::spazio[campo::macchina.riga][campo::macchina.colonna - 2] != '#')
-	{
+			campo::spazio[campo::macchina.riga - 1][campo::macchina.colonna] = ' ';
+			campo::spazio[campo::macchina.riga + 1][campo::macchina.colonna] = ' ';
+			campo::spazio[campo::macchina.riga][campo::macchina.colonna + 1] = ' ';
 
-		campo::spazio[campo::macchina.riga - 1][campo::macchina.colonna] = ' ';
-		campo::spazio[campo::macchina.riga + 1][campo::macchina.colonna] = ' ';
-		campo::spazio[campo::macchina.riga][campo::macchina.colonna + 1] = ' ';
+			campo::macchina.colonna = campo::macchina.colonna - 1;
 
-		campo::macchina.colonna = campo::macchina.colonna - 1;
+			campo::scriviMacchina();
+		}
 
-		campo::scriviMacchina();
+		else
+			cout << "non puoi andare di qua";//implementare una scritta piú efficace
+
+
+		break;
+	case('d'):
+	case('D'): // qua vanno aggiunti i controlli di collisione
+		if (campo::spazio[campo::macchina.riga][campo::macchina.colonna + 2] != '#') {
+
+			campo::spazio[campo::macchina.riga - 1][campo::macchina.colonna] = ' ';
+			campo::spazio[campo::macchina.riga + 1][campo::macchina.colonna] = ' ';
+			campo::spazio[campo::macchina.riga][campo::macchina.colonna - 1] = ' ';
+
+			campo::macchina.colonna = campo::macchina.colonna + 1;
+
+			campo::scriviMacchina();
+		}
+		else
+			cout << "non puoi andare di qua";//implementare una scritta piú efficace
+		break;
+	case('w'):
+	case('W'):
+		break;
+	default:
+		cout << "tasto sbagliato";
+		break;
 	}
-
-	else
-		cout << "non puoi andare di qua";//implementare una scritta piú efficace
-
 }
 
-void campo::muoviDestra() {
-	if (campo::spazio[campo::macchina.riga][campo::macchina.colonna + 2] != '#') {
-
-		campo::spazio[campo::macchina.riga - 1][campo::macchina.colonna] = ' ';
-		campo::spazio[campo::macchina.riga + 1][campo::macchina.colonna] = ' ';
-		campo::spazio[campo::macchina.riga][campo::macchina.colonna - 1] = ' ';
-
-		campo::macchina.colonna = campo::macchina.colonna + 1;
-
-		campo::scriviMacchina();
-	}
-	else
-		cout << "non puoi andare di qua";//implementare una scritta piú efficace
-}

@@ -20,25 +20,7 @@ int main() {
 		system("cls");
 		c.aggiungiOstacoli();
 		c.stampa();
-
-		//controllo del movimento della macchina 
-		switch (_getch())
-		{
-		case('a'):
-		case('A'):
-			c.muoviSinistra();
-			break;
-		case('d'):
-		case('D'):
-			c.muoviDestra();
-			break;
-		case('w'):
-		case('W'):
-			break;
-		default:
-			break;
-		}
-
+		c.muoviMacchina(_getch());
 
 	}
 

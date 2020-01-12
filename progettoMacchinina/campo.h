@@ -28,4 +28,6 @@ public:
 	void scriviLevel();
 	void muoviSinistra();
 	void muoviDestra();
+	void muoviMacchina(char);
+
 };
