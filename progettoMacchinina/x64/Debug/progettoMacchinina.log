@@ -1,5 +1,2 @@
-﻿  Source.cpp
-c:\users\luca.bretta\source\repos\progettomacchinina\progettomacchinina\source.cpp(6): warning C4101: 'direzione': unreferenced local variable
-  campo.cpp
-  Generating Code...
+﻿  campo.cpp
   progettoMacchinina.vcxproj -> C:\Users\luca.bretta\source\repos\progettoMacchinina\x64\Debug\progettoMacchinina.exe
