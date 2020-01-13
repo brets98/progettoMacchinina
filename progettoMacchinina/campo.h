@@ -16,7 +16,7 @@ protected:
 	char spazio[40][40];
 	int livello;
 	bool immunità;
-
+	int righeDiff;
 public:
 	campo();
 	campo(int a, int b, int p, int l, bool im);

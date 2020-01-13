@@ -8,7 +8,7 @@ campo::campo(int a, int b, int p, int l, bool im) {
 	campo::punti = p;
 	campo::immunità = im;
 	campo::livello = l;
-
+	campo::righeDiff = 0;
 	int i = 0, j = 0;
 
 	for (i = 0; i < campo::righe; i++) {
@@ -201,32 +201,38 @@ void campo::colpito() { // ci sará una schermata quando l'auto viene colpita da 
 
 // Lettere utilizzate = O E S T V
 
-void campo::aggiungiOstacoli() { 
-	int j;// decide dove piazzare l'ostacolo
-	int b;// decide che far stampare
-	char ost; 
-	b = 1 + rand() % 5;
-	switch (b) {
-	case 1:
-		ost = 'O';
-		break;
-	case 2:
-		ost = 'E';
-		break;
-	case 3:
-		ost = 'S';
-		break;
-	case 4:
-		ost = 'B';
-		break;
-	case 5:
-		ost = 'V';
-		break;	
+
+void campo::aggiungiOstacoli() {
+	if (campo::righeDiff == 0) {
+		campo::righeDiff = 4 - campo::livello;
+		int j;// decide dove piazzare l'ostacolo
+		int b;// decide che far stampare
+		char ost;
+		b = 1 + rand() % 5;
+		switch (b) {
+		case 1:
+			ost = 'O';
+			break;
+		case 2:
+			ost = 'E';
+			break;
+		case 3:
+			ost = 'S';
+			break;
+		case 4:
+			ost = 'B';
+			break;
+		case 5:
+			ost = 'V';
+			break;
+		}
+		j = 2 + rand() % 23;
+		campo::spazio[1][j] = ost;
 	}
-
-	j = 2 + rand() % 23;
-	campo::spazio[1][j] = ost;
-
+	else
+	{
+		campo::righeDiff = campo::righeDiff - 1;
+	}
 }
 void campo::scriviMacchina()
 {
