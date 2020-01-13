@@ -1,11 +1,13 @@
 #include "campo.h"
 #include <cstdlib>
 
-campo::campo(int a, int b, int p) {
+campo::campo(int a, int b, int p, int l, bool im) {
 
 	campo::righe = a;//a sono le righe
 	campo::colonne = b;//b sono le colonne 
 	campo::punti = p;
+	campo::immunità = im;
+	campo::livello = l;
 
 	int i = 0, j = 0;
 
@@ -50,11 +52,16 @@ void campo::stampa() {
 	int i, j;
 	for (i = 0; i < campo::righe; i++) {
 		for (j = 0; j < campo::colonne; j++) {
-			if (campo::spazio[i][j] == '&') //bisogna aggiungere
-				cout << campo::punti; // & é il carattere speciale che sta ad identificare i punti, cosí da non dover sempre passare una variabile intera
+
+			if (campo::spazio[i][j] == '&' || campo::spazio[i][j] == '+') //bisogna aggiungere
+			{	
+				if (campo::spazio[i][j] == '&')
+					cout << campo::punti; // & é il carattere speciale che sta ad identificare i punti, cosí da non dover sempre passare una variabile intera
+				else if (campo::spazio[i][j] == '+')
+					cout << campo::livello;
+			}
 			else
 				cout << campo::spazio[i][j] << " ";
-
 		}
 		cout << "\n";
 	}
@@ -63,7 +70,7 @@ void campo::stampa() {
 		for (j = campo::colonne - 15;  j >= 1; j--)
 		{
 			// aggiungere controllo collisioni 
-			if (campo::spazio[i][j] == 'O' || campo::spazio[i][j] == 'E' || campo::spazio[i][j] == 'S' || campo::spazio[i][j] == 'T' || campo::spazio[i][j] == 'V')
+			if (campo::spazio[i][j] == 'O' || campo::spazio[i][j] == 'E' || campo::spazio[i][j] == 'S' || campo::spazio[i][j] == 'B' || campo::spazio[i][j] == 'V')
 			{
 				
 				if (i <= campo::macchina.riga) // controllo che a livello della macchina cancellano le o deve controllare collisioni
@@ -107,6 +114,89 @@ void campo::regolamento() {
 
 void campo::colpito() { // ci sará una schermata quando l'auto viene colpita da qualcosa 
 
+	bool preso = false;
+
+	switch (campo::spazio[campo::macchina.riga - 1][campo::macchina.colonna]) {
+	
+	case('*'):
+		break;
+	case('O'):
+	case('E'):
+	case('V'):
+		if (!immunità) {
+			campo::punti = campo::punti - 10;
+			preso = true;
+		}
+		else
+			campo::immunità = false;
+		break;
+	case('S'):
+		campo::immunità = true;
+		break;
+	case('B'):
+		//vorrei aumentare la benzina ma prima chiedo a Bretta
+		cout << "PIU' BENZINA!!";
+		break;
+	default:
+		break;
+	}
+
+	switch (campo::spazio[campo::macchina.riga][campo::macchina.colonna + 1]) {
+
+	case('*'):
+		break;
+	case('O'):
+	case('E'):
+	case('V'):
+		if (!immunità) {
+			campo::punti = campo::punti - 10;
+			preso = true;
+		}
+		else
+			campo::immunità = false;
+		break;
+	case('S'):
+		campo::immunità = true;
+		break;
+	case('B'):
+		//vorrei aumentare la benzina ma prima chiedo a Bretta
+		cout << "PIU' BENZINA!!";
+		break;
+	default:
+		break;
+	}
+
+	switch (campo::spazio[campo::macchina.riga][campo::macchina.colonna - 1]) {
+
+	case('*'):
+		break;
+	case('O'):
+	case('E'):
+	case('V'):
+		if (!immunità) {
+			campo::punti = campo::punti - 10;
+			preso = true;
+		}
+		else
+			campo::immunità = false;
+		break;
+	case('S'):
+		campo::immunità = true;
+		break;
+	case('B'):
+		//vorrei aumentare la benzina ma prima chiedo a Bretta
+		cout << "PIU' BENZINA!!";
+		break;
+	default:
+		break;
+	}
+	
+	if (!preso) {
+		campo::punti = campo::punti + 1;
+		if (campo::punti%100 == 0) {
+			campo::livello = campo::livello + 1;
+		}
+	}
 }
 
 
@@ -128,7 +218,7 @@ void campo::aggiungiOstacoli() {
 		ost = 'S';
 		break;
 	case 4:
-		ost = 'T';
+		ost = 'B';
 		break;
 	case 5:
 		ost = 'V';
@@ -141,7 +231,7 @@ void campo::aggiungiOstacoli() {
 }
 void campo::scriviMacchina()
 {
-
+	colpito();
 	campo::spazio[campo::macchina.riga + 1][campo::macchina.colonna] = '*';
 	campo::spazio[campo::macchina.riga - 1][campo::macchina.colonna] = '*';
 	campo::spazio[campo::macchina.riga][campo::macchina.colonna + 1] = '*';
@@ -186,9 +276,8 @@ void campo::muoviMacchina(char l) {
 
 			else
 				cout << "non puoi andare di qua";//implementare una scritta piú efficace
-
-
 			break;
+
 		case('d'):
 		case('D'): // qua vanno aggiunti i controlli di collisione
 			if (campo::spazio[campo::macchina.riga][campo::macchina.colonna + 2] != '#') {
@@ -204,8 +293,10 @@ void campo::muoviMacchina(char l) {
 			else
 				cout << "non puoi andare di qua";//implementare una scritta piú efficace
 			break;
+
 		case('w'):
 		case('W'):
+			scriviMacchina();
 			break;
 		}
 	}

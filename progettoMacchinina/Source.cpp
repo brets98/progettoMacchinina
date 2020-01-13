@@ -5,7 +5,7 @@ int main() {
 	bool logical = 1;
 	char direzione;
 
-	campo c(30, 40, 0);
+	campo c(30, 40, 0, 0, false);
 	c.sigla();
 	system("pause");
 	system("cls");

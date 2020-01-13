@@ -14,10 +14,12 @@ protected:
 	int righe, colonne;
 	int punti;
 	char spazio[40][40];
+	int livello;
+	bool immunità;
 
 public:
 	campo();
-	campo(int a, int b, int p);
+	campo(int a, int b, int p, int l, bool im);
 	void stampa();
 	void sigla();
 	void regolamento();
