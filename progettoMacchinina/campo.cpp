@@ -193,10 +193,9 @@ void campo::colpito() { // ci sará una schermata quando l'auto viene colpita da 
 	
 	if (!preso) {
 		campo::punti = campo::punti + 1;
-		if (campo::punti%100 == 0) {
-			campo::livello = campo::livello + 1;
-		}
 	}
+
+	campo::livello = campo::punti / 100;
 }
 
 
