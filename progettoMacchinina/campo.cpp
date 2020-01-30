@@ -76,7 +76,7 @@ void campo::stampa() {
 		for (j = campo::colonne - 15;  j >= 1; j--)
 		{
 			// aggiungere controllo collisioni 
-			if (campo::spazio[i][j] == 'O' || campo::spazio[i][j] == 'E' || campo::spazio[i][j] == 'S' || campo::spazio[i][j] == 'B' || campo::spazio[i][j] == '*' || campo::spazio[i][j] == 'V')
+			if (campo::spazio[i][j] == 'O' || campo::spazio[i][j] == 'E' || campo::spazio[i][j] == 'S' || campo::spazio[i][j] == 'B' || campo::spazio[i][j] == '?' || campo::spazio[i][j] == 'V')
 			{
 				
 				if (i <= campo::macchina.riga) // controllo che a livello della macchina cancellano le o deve controllare collisioni
@@ -116,19 +116,24 @@ void campo::regolamento() {
 	cout << "W per far muovere l'auto in avanti!\n\n";
 
 }
+void campo::sconfitta() {
+	cout << " -------------------------------\n";
+	cout << "| BENVENUTO NEL GIOCO CAR SPEED |\n";
+	cout << " -------------------------------\n\n";
+}
 
 
-void campo::colpito() { // ci sará una schermata quando l'auto viene colpita da qualcosa 
+void campo::colpito() { 
 
 	bool preso = false;
 
 	switch (campo::spazio[campo::macchina.riga - 1][campo::macchina.colonna]) {
 	
-	case('*'):
-		break;
 	case('O'):
 	case('E'):
 	case('V'):
+	case('?'):
+
 		if (!immunità) {
 			campo::punti = campo::punti - 10;
 			preso = true;
@@ -149,11 +154,10 @@ void campo::colpito() { // ci sará una schermata quando l'auto viene colpita da 
 
 	switch (campo::spazio[campo::macchina.riga][campo::macchina.colonna + 1]) {
 
-	case('*'):
-		break;
 	case('O'):
 	case('E'):
 	case('V'):
+	case('?'):
 		if (!immunità) {
 			campo::punti = campo::punti - 10;
 			preso = true;
@@ -174,11 +178,11 @@ void campo::colpito() { // ci sará una schermata quando l'auto viene colpita da 
 
 	switch (campo::spazio[campo::macchina.riga][campo::macchina.colonna - 1]) {
 
-	case('*'):
-		break;
 	case('O'):
 	case('E'):
 	case('V'):
+	case('?'):
+
 		if (!immunità) {
 			campo::punti = campo::punti - 10;
 			preso = true;
@@ -211,12 +215,12 @@ void campo::colpito() { // ci sará una schermata quando l'auto viene colpita da 
 void campo::aggiungiOstacoli() {
 	if (campo::flagMacchina == 1) {
 		campo::spazio[1][campo::posMacchinaCattiva] = 'V';
-		campo::spazio[1][campo::posMacchinaCattiva + 1] = '*';
-		campo::spazio[1][campo::posMacchinaCattiva - 1] = '*';
+		campo::spazio[1][campo::posMacchinaCattiva + 1] = '?';
+		campo::spazio[1][campo::posMacchinaCattiva - 1] = '?';
 		campo::flagMacchina = 2;
 	}
 	else if (campo::flagMacchina == 2) {
-		campo::spazio[1][campo::posMacchinaCattiva] = '*';
+		campo::spazio[1][campo::posMacchinaCattiva] = '?';
 		campo::flagMacchina = 0;
 	}
 	else if (campo::righeDiff == 0) {
@@ -239,7 +243,7 @@ void campo::aggiungiOstacoli() {
 			ost = 'B';
 			break;
 		case 5:
-				ost = '*';
+				ost = '?';
 				campo::flagMacchina = 1;
 			break;
 		}
