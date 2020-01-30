@@ -9,15 +9,21 @@ campo::campo(int a, int b, int p, int l, bool im) {
 	campo::immunità = im;
 	campo::livello = l;
 	campo::righeDiff = 0;
+	campo::flagMacchina = 0;
+	campo::posMacchinaCattiva = 0;
 	int i = 0, j = 0;
 
 	for (i = 0; i < campo::righe; i++) {
 
 		for (j = 0; j < campo::colonne; j++) {
 
-			if (j == 0 ||/* j == campo::colonne - 1 ||*/ i == 0 || i == campo::righe - 1 || j == campo::colonne - 14) {
-				if (i == 0 || i == campo::righe - 1)
-					campo::spazio[i][j] = '_';
+			if (j == 0 || i == 0 || i == campo::righe - 1 || j == campo::colonne - 14) {
+				if (i == 0 || i == campo::righe - 1) {
+					if (j < campo::righe - 3)
+						campo::spazio[i][j] = '_';
+					else
+						campo::spazio[i][j] = ' ';
+                }
 				else
 					campo::spazio[i][j] = '|';
 			}
@@ -70,7 +76,7 @@ void campo::stampa() {
 		for (j = campo::colonne - 15;  j >= 1; j--)
 		{
 			// aggiungere controllo collisioni 
-			if (campo::spazio[i][j] == 'O' || campo::spazio[i][j] == 'E' || campo::spazio[i][j] == 'S' || campo::spazio[i][j] == 'B' || campo::spazio[i][j] == 'V')
+			if (campo::spazio[i][j] == 'O' || campo::spazio[i][j] == 'E' || campo::spazio[i][j] == 'S' || campo::spazio[i][j] == 'B' || campo::spazio[i][j] == '*' || campo::spazio[i][j] == 'V')
 			{
 				
 				if (i <= campo::macchina.riga) // controllo che a livello della macchina cancellano le o deve controllare collisioni
@@ -203,11 +209,21 @@ void campo::colpito() { // ci sará una schermata quando l'auto viene colpita da 
 
 
 void campo::aggiungiOstacoli() {
-	if (campo::righeDiff == 0) {
+	if (campo::flagMacchina == 1) {
+		campo::spazio[1][campo::posMacchinaCattiva] = 'V';
+		campo::spazio[1][campo::posMacchinaCattiva + 1] = '*';
+		campo::spazio[1][campo::posMacchinaCattiva - 1] = '*';
+		campo::flagMacchina = 2;
+	}
+	else if (campo::flagMacchina == 2) {
+		campo::spazio[1][campo::posMacchinaCattiva] = '*';
+		campo::flagMacchina = 0;
+	}
+	else if (campo::righeDiff == 0) {
 		campo::righeDiff = 4 - campo::livello;
 		int j;// decide dove piazzare l'ostacolo
 		int b;// decide che far stampare
-		char ost;
+		char ost = ' ';
 		b = 1 + rand() % 5;
 		switch (b) {
 		case 1:
@@ -223,10 +239,13 @@ void campo::aggiungiOstacoli() {
 			ost = 'B';
 			break;
 		case 5:
-			ost = 'V';
+				ost = '*';
+				campo::flagMacchina = 1;
 			break;
 		}
 		j = 2 + rand() % 23;
+		//salvare posizione macchina 
+		campo::posMacchinaCattiva = j;
 		campo::spazio[1][j] = ost;
 	}
 	else

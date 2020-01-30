@@ -17,6 +17,8 @@ protected:
 	int livello;
 	bool immunità;
 	int righeDiff;
+	int flagMacchina;
+	int posMacchinaCattiva;
 public:
 	campo();
 	campo(int a, int b, int p, int l, bool im);
