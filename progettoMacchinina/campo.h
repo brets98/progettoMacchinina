@@ -19,6 +19,7 @@ protected:
 	int righeDiff;
 	int flagMacchina;
 	int posMacchinaCattiva;
+	int benzina;
 public:
 	campo();
 	campo(int a, int b, int p, int l, bool im);
@@ -34,5 +35,5 @@ public:
 	void muoviSinistra();
 	void muoviDestra();
 	void muoviMacchina(char);
-
+	void cosaMiHaColpito(bool, int, int);
 };

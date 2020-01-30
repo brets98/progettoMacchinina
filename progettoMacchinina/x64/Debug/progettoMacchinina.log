@@ -1,2 +1,8 @@
-﻿  campo.cpp
+﻿  Source.cpp
+C:\Users\luca.bretta\source\repos\progettoMacchinina\progettoMacchinina\Source.cpp(6,7): warning C4101: 'direzione': unreferenced local variable
+  campo.cpp
+C:\Users\luca.bretta\source\repos\progettoMacchinina\progettoMacchinina\campo.cpp(74,34): warning C4309: '=': truncation of constant value
+C:\Users\luca.bretta\source\repos\progettoMacchinina\progettoMacchinina\campo.cpp(78,34): warning C4309: '=': truncation of constant value
+C:\Users\luca.bretta\source\repos\progettoMacchinina\progettoMacchinina\campo.cpp(193,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+  Generating Code...
   progettoMacchinina.vcxproj -> C:\Users\luca.bretta\source\repos\progettoMacchinina\x64\Debug\progettoMacchinina.exe
