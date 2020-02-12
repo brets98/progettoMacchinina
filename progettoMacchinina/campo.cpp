@@ -69,7 +69,7 @@ void campo::stampa() {
 				else if (campo::spazio[i][j] == '+')
 					cout << campo::livello;
 				else {
-					for (l = 0; l + j <= j + 10; l++) {
+					for (l = 0; l < 10; l++) {
 						if (k >= 0) {
 							campo::spazio[i][l + j] = 178;
 							k--;
@@ -163,6 +163,7 @@ void campo::cosaMiHaColpito(bool preso, int riga, int colonna) {
 	case('B'):
 		//vorrei aumentare la benzina ma prima chiedo a Bretta
 		cout << "PIU' BENZINA!!";
+		campo::benzina++;
 		break;
 	default:
 		break;
@@ -190,6 +191,8 @@ void campo::colpito() {  // per farlo un po piú carino si puó scrivere un funzio
 
 
 void campo::aggiungiOstacoli() {
+	int limiteSotto = 2;
+	int limiteSopra = 23;
 	srand(time(NULL));
 
 	if (campo::flagMacchina == 1) {
@@ -222,11 +225,13 @@ void campo::aggiungiOstacoli() {
 			ost = 'B';
 			break;
 		case 5:
+			limiteSotto = 3;
+			limiteSopra = 22;  
 				ost = '?';
 				campo::flagMacchina = 1;
 			break;
 		}
-		j = 2 + rand() % 23;
+		j = limiteSotto + rand() % limiteSopra;
 		//salvare posizione macchina 
 		campo::posMacchinaCattiva = j;
 		campo::spazio[1][j] = ost;
