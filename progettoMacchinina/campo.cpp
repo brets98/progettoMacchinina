@@ -12,7 +12,7 @@ campo::campo(int a, int b, int p, int l, bool im) {
 	campo::flagMacchina = 0;
 	campo::posMacchinaCattiva = 0;
 	//sto aggiungendo la barra della benzina
-	campo::benzina = 4;
+	campo::benzina = 101;
 	int i = 0, j = 0;
 
 	for (i = 0; i < campo::righe; i++) {
@@ -57,27 +57,40 @@ campo::campo(int a, int b, int p, int l, bool im) {
 };
 
 void campo::stampa() {
-	int k = benzina;
+	int k;
+
+	if (campo::benzina >= 10 && campo::benzina > 0) {
+		k = (campo::benzina / 10);
+	}
+	else k = 1;
+
 	int i, j, l;
 	for (i = 0; i < campo::righe; i++) {
 		for (j = 0; j < campo::colonne; j++) {
 
-			if (campo::spazio[i][j] == '&' || campo::spazio[i][j] == '+' || campo::spazio[i][j] == '$') // il $ sta per benzina
+			if (campo::spazio[i][j] == '&' || campo::spazio[i][j] == '+' || campo::spazio[i][j] == '$' || campo::spazio[i][j] == '%') // il $ sta per benzina
 			{	
 				if (campo::spazio[i][j] == '&')
 					cout << campo::punti; // & é il carattere speciale che sta ad identificare i punti, cosí da non dover sempre passare una variabile intera
 				else if (campo::spazio[i][j] == '+')
 					cout << campo::livello;
-				else {
+				else if (campo::spazio[i][j] == '$'){
+
+					cout << "Benzina: " << campo::benzina;
+
 					for (l = 0; l < 10; l++) {
-						if (k >= 0) {
-							campo::spazio[i][l + j] = 178;
+					
+						if (k > 0) {
+							campo::spazio[i+1][l + j] = 178;
 							k--;
 						}
 						else {
-							campo::spazio[i][l + j] = 176;
+							campo::spazio[i+1][l + j] = 176;
 						}
 					}
+				}
+				else if (campo::immunità) {
+					cout << "SEI IMMUNE";
 				}
 				
 			}
@@ -108,8 +121,9 @@ void campo::stampa() {
 
 
 void campo::sigla() {
+
 	cout << " -------------------------------\n";
-	cout << "| BENVENUTO NEL GIOCO CAR SPEED |\n";
+	cout << "| BENVENUTO NEL GIOCO CAR SPEED |\n"; 
 	cout << " -------------------------------\n\n";
 }
 
@@ -125,7 +139,7 @@ void campo::regolamento() {
 	cout << "                            *************\n";
 	cout << "                            * MOVIMENTI *\n";
 	cout << "                            *************\n\n";
-	cout << "E' possibile muovere l'auto solo nelle direzioni destra -> e sinistra <-: \n\n";
+	cout << "E' possibile muovere l'auto solo nelle direzioni destra -> e sinistra <- e avanti: \n\n";
 	cout << "A per far muovere l'auto a sinistra\n\n";
 	cout << "D per far muovere l'auto a destra\n\n";
 	cout << "W per far muovere l'auto in avanti!\n\n";
@@ -134,9 +148,12 @@ void campo::regolamento() {
 void campo::sconfitta() {
 	system("cls");
 
-	cout << " -------------------------------\n";
-	cout << "|  HAI PERSO BRUTTO MONGOLOIDE  |\n";
-	cout <<" -------------------------------\n\n";
+	cout << " -------------\n";
+	cout << "|  HAI PERSO  |\n";
+	cout <<"  -------------\n\n";
+	campo::punti = 0;
+	campo::livello = 0;
+	campo::benzina = 101;
 	system("pause");
 }
 void campo::cosaMiHaColpito(bool preso, int riga, int colonna) {
@@ -145,8 +162,6 @@ void campo::cosaMiHaColpito(bool preso, int riga, int colonna) {
 
 	case('O'):
 	case('E'):
-	case('V'):
-	case('?'):
 
 		if (!immunità) {
 			campo::punti = campo::punti - 10;
@@ -157,13 +172,68 @@ void campo::cosaMiHaColpito(bool preso, int riga, int colonna) {
 		else
 			campo::immunità = false;
 		break;
+
+	case('?'):
+
+		if (!immunità) {
+			campo::punti = campo::punti - 10;
+			preso = true;
+			if (campo::punti < 0)
+				campo::sconfitta();
+		}
+		else
+			campo::immunità = false;
+
+		//Cancello l'ostacolo macchina
+
+		if (campo::spazio[riga][colonna - 1] == 'V') { //colpito da macchina tutta a sinistra
+
+			campo::spazio[riga][colonna - 1] = ' ';
+			campo::spazio[riga][colonna - 2] = ' ';
+			campo::spazio[riga - 1][colonna - 1] = ' ';
+			campo::spazio[riga + 1][colonna - 1] = ' ';
+
+		}
+		else if (campo::spazio[riga][colonna + 1] == 'V') { //colpito da macchina tutta a destra 
+
+
+			campo::spazio[riga][colonna + 1] = ' ';
+			campo::spazio[riga][colonna + 2] = ' ';
+			campo::spazio[riga + 1][colonna + 1] = ' ';
+			campo::spazio[riga - 1][colonna + 1] = ' ';
+
+		}
+		else { //colpito da macchina parzialmente a destra o a sinistra o sopra
+			campo::spazio[riga - 1][colonna] = ' ';
+			campo::spazio[riga - 2][colonna] = ' ';
+		}
+
+		if (campo::spazio[riga - 1][colonna + 1] == '*') { //colpito da sinistra
+			campo::spazio[riga - 1][colonna - 1] = ' ';
+			campo::spazio[riga - 1][colonna + 1] = '*';
+		}
+		else if (campo::spazio[riga - 1][colonna - 1] == '*') { //colpito da destra
+			campo::spazio[riga - 1][colonna + 1] = ' ';
+			campo::spazio[riga - 1][colonna - 1] = '*';
+		}
+		else { //colpito da sopra
+			campo::spazio[riga - 1][colonna - 1] = ' ';
+			campo::spazio[riga - 1][colonna + 1] = ' ';
+		}
+
+		break;
+
 	case('S'):
 		campo::immunità = true;
 		break;
 	case('B'):
 		//vorrei aumentare la benzina ma prima chiedo a Bretta
+		
+		campo::benzina = campo::benzina+50;
+		if (campo::benzina > 100)
+			campo::benzina = 101;
+
 		cout << "PIU' BENZINA!!";
-		campo::benzina++;
 		break;
 	default:
 		break;
@@ -175,10 +245,10 @@ void campo::colpito() {  // per farlo un po piú carino si puó scrivere un funzio
 
 	bool preso = false;
 
-	campo::cosaMiHaColpito(preso, campo::macchina.riga - 1, campo::macchina.colonna);
 	campo::cosaMiHaColpito(preso, campo::macchina.riga, campo::macchina.colonna + 1);
 	campo::cosaMiHaColpito(preso, campo::macchina.riga, campo::macchina.colonna - 1);
-	
+	campo::cosaMiHaColpito(preso, campo::macchina.riga - 1, campo::macchina.colonna);
+
 	if (!preso) {
 		campo::punti = campo::punti + 1;
 	}
@@ -244,6 +314,11 @@ void campo::aggiungiOstacoli() {
 void campo::scriviMacchina()
 {
 	colpito();
+	campo::benzina--;
+
+	if (campo::benzina <= 0)
+		campo::sconfitta();
+
 	campo::spazio[campo::macchina.riga + 1][campo::macchina.colonna] = '*';
 	campo::spazio[campo::macchina.riga - 1][campo::macchina.colonna] = '*';
 	campo::spazio[campo::macchina.riga][campo::macchina.colonna + 1] = '*';
@@ -269,6 +344,8 @@ void campo::scriviLevel() {
 	campo::spazio[16][33] = '+';
 
 	campo::spazio[18][27] = '$';
+
+	campo::spazio[22][27] = '%';
 }
 void campo::muoviMacchina(char l) {
 	if (l == 'a' || l == 'A' || l == 'd' || l == 'D' || l == 'w' || l == 'W') {

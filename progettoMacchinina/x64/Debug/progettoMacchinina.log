@@ -1,5 +1,5 @@
 ﻿  campo.cpp
-C:\Users\luca.bretta\source\repos\progettoMacchinina\progettoMacchinina\campo.cpp(74,34): warning C4309: '=': truncation of constant value
-C:\Users\luca.bretta\source\repos\progettoMacchinina\progettoMacchinina\campo.cpp(78,34): warning C4309: '=': truncation of constant value
-C:\Users\luca.bretta\source\repos\progettoMacchinina\progettoMacchinina\campo.cpp(195,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
-  progettoMacchinina.vcxproj -> C:\Users\luca.bretta\source\repos\progettoMacchinina\x64\Debug\progettoMacchinina.exe
+c:\users\marti\source\repos\progettomacchinina\progettomacchinina\campo.cpp(84): warning C4309: '=': troncamento di valore costante
+c:\users\marti\source\repos\progettomacchinina\progettomacchinina\campo.cpp(88): warning C4309: '=': troncamento di valore costante
+c:\users\marti\source\repos\progettomacchinina\progettomacchinina\campo.cpp(266): warning C4244: 'argomento': conversione da 'time_t' a 'unsigned int'. Possibile perdita di dati.
+  progettoMacchinina.vcxproj -> C:\Users\marti\source\repos\progettoMacchinina\x64\Debug\progettoMacchinina.exe
