@@ -6,11 +6,11 @@ using namespace std;
 
 class campo {
 protected:
-	struct coordinateMaccina {
+	struct coordinateMacchina {
 		int riga = 0;
 		int colonna = 0;
 	};
-	coordinateMaccina macchina;
+	coordinateMacchina macchina;
 	int righe, colonne;
 	int punti;
 	char spazio[40][40];
@@ -21,7 +21,11 @@ protected:
 	int posMacchinaCattiva;
 	int benzina;
 public:
-	campo();
+
+	//Variabile utile al main
+	bool perso;
+
+	//METODI
 	campo(int a, int b, int p, int l, bool im);
 	void stampa();
 	void sigla();

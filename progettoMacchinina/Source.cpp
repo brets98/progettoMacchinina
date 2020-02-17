@@ -1,27 +1,38 @@
 #include "campo.h"
 #include <conio.h>
+#include <Windows.h>
 
 int main() {
-	bool logical = 1;
+
+	ShowWindow(GetConsoleWindow(), SW_MAXIMIZE);
+
+	bool logical = true;
 	char direzione;
+	bool sconfitta = false;
 
-	campo c(30, 40, 0, 0, false);
-	c.sigla();
+	campo i(30, 40, 0, 1, false);
+	i.sigla();
 	system("pause");
 	system("cls");
-	c.regolamento();
+	i.regolamento();
 	system("pause");
 	system("cls");
-	c.stampa();
-	system("pause");
-	while (logical == 1)
+
+	while (logical)
 	{
-
 		system("cls");
-		c.aggiungiOstacoli();
+		campo c(30, 40, 0, 1, false);
 		c.stampa();
-		c.muoviMacchina(_getch());
+		system("pause");
 
+		while (!c.perso) {
+
+			system("cls");
+			c.aggiungiOstacoli();
+			c.stampa();
+			c.muoviMacchina(_getch());
+		}
+		
 	}
 
 	return 0;

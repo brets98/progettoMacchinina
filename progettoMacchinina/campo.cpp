@@ -11,7 +11,7 @@ campo::campo(int a, int b, int p, int l, bool im) {
 	campo::righeDiff = 0;
 	campo::flagMacchina = 0;
 	campo::posMacchinaCattiva = 0;
-	//sto aggiungendo la barra della benzina
+	campo::perso = false;
 	campo::benzina = 101;
 	int i = 0, j = 0;
 
@@ -34,8 +34,6 @@ campo::campo(int a, int b, int p, int l, bool im) {
 			else
 				campo::spazio[i][j] = ' ';
 		}
-
-
 	}
 
 	campo::scriviLevel();
@@ -146,14 +144,16 @@ void campo::regolamento() {
 
 }
 void campo::sconfitta() {
-	system("cls");
 
-	cout << " -------------\n";
+	system("cls");
+	campo::perso = true;
+
+	cout << " ------------- \n";
 	cout << "|  HAI PERSO  |\n";
-	cout <<"  -------------\n\n";
+	cout << " ------------- \n\n";
 	campo::punti = 0;
 	campo::livello = 0;
-	campo::benzina = 101;
+	campo::benzina = 100;
 	system("pause");
 }
 void campo::cosaMiHaColpito(bool preso, int riga, int colonna) {
@@ -161,10 +161,11 @@ void campo::cosaMiHaColpito(bool preso, int riga, int colonna) {
 	switch (campo::spazio[riga][colonna]) {
 
 	case('O'):
-	case('E'):
+	case('E'): //OSTACOLI COMUNI
 
 		if (!immunità) {
-			campo::punti = campo::punti - 10;
+
+			campo::punti = campo::punti - (10*campo::livello);
 			preso = true;
 			if (campo::punti < 0)
 				campo::sconfitta();
@@ -173,7 +174,7 @@ void campo::cosaMiHaColpito(bool preso, int riga, int colonna) {
 			campo::immunità = false;
 		break;
 
-	case('?'):
+	case('?'): //MACCHINA NEMICA
 
 		if (!immunità) {
 			campo::punti = campo::punti - 10;
@@ -223,11 +224,42 @@ void campo::cosaMiHaColpito(bool preso, int riga, int colonna) {
 
 		break;
 
-	case('S'):
+	case('V'): //MACCHINA NEMICA
+
+
+		if (!immunità) {
+			campo::punti = campo::punti - 10;
+			preso = true;
+			if (campo::punti < 0)
+				campo::sconfitta();
+		}
+		else
+			campo::immunità = false;
+
+		//Cancello l'ostacolo macchina
+
+		if (campo::spazio[riga][colonna + 1] == 'A' || campo::spazio[riga][colonna - 1] == 'A') { //colpito da sinistra
+
+			campo::spazio[riga - 1][colonna] = ' ';
+			campo::spazio[riga + 1][colonna] = ' ';
+			campo::spazio[riga][colonna - 1] = ' ';
+			campo::spazio[riga][colonna + 1] = 'A';
+		}
+		else { //colpito da sopra
+			campo::spazio[riga - 1][colonna] = ' ';
+			campo::spazio[riga][colonna + 1] = ' ';
+			campo::spazio[riga][colonna - 1] = ' ';
+		}
+
+
+		break;
+
+	case('S'): //IMMUNITA'
+
 		campo::immunità = true;
 		break;
-	case('B'):
-		//vorrei aumentare la benzina ma prima chiedo a Bretta
+
+	case('B'): //BENZINA
 		
 		campo::benzina = campo::benzina+50;
 		if (campo::benzina > 100)
@@ -235,6 +267,7 @@ void campo::cosaMiHaColpito(bool preso, int riga, int colonna) {
 
 		cout << "PIU' BENZINA!!";
 		break;
+
 	default:
 		break;
 	}
@@ -253,7 +286,10 @@ void campo::colpito() {  // per farlo un po piú carino si puó scrivere un funzio
 		campo::punti = campo::punti + 1;
 	}
 
-	campo::livello = campo::punti / 100;
+	if (campo::punti < 100)
+		campo::livello = 1;
+	else
+		campo::livello = campo::punti / 100;
 }
 
 
@@ -262,7 +298,7 @@ void campo::colpito() {  // per farlo un po piú carino si puó scrivere un funzio
 
 void campo::aggiungiOstacoli() {
 	int limiteSotto = 2;
-	int limiteSopra = 23;
+	int limiteSopra = 22;
 	srand(time(NULL));
 
 	if (campo::flagMacchina == 1) {
@@ -296,7 +332,6 @@ void campo::aggiungiOstacoli() {
 			break;
 		case 5:
 			limiteSotto = 3;
-			limiteSopra = 22;  
 				ost = '?';
 				campo::flagMacchina = 1;
 			break;
