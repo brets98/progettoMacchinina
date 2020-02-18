@@ -33,11 +33,8 @@ public:
 	void sconfitta();
 	void colpito();//ancora da impplement
 	void aggiungiOstacoli();
-	void spostaO();
 	void scriviMacchina();
 	void scriviLevel();
-	void muoviSinistra();
-	void muoviDestra();
 	void muoviMacchina(char);
 	void cosaMiHaColpito(bool, int, int);
 };

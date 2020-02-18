@@ -49,9 +49,6 @@ campo::campo(int a, int b, int p, int l, bool im) {
 	} while (campo::spazio[i][j] == 'C');//non é mai uguale a B quindi fa una mandata e esce, in poche parole cervo dove mettere la "V"
 
 	campo::scriviMacchina();
-
-
-
 };
 
 void campo::stampa() {
@@ -63,6 +60,7 @@ void campo::stampa() {
 	else k = 1;
 
 	int i, j, l;
+
 	for (i = 0; i < campo::righe; i++) {
 		for (j = 0; j < campo::colonne; j++) {
 
@@ -101,19 +99,18 @@ void campo::stampa() {
 	{
 		for (j = campo::colonne - 15;  j >= 1; j--)
 		{
-			// aggiungere controllo collisioni 
 			if (campo::spazio[i][j] == 'O' || campo::spazio[i][j] == 'E' || campo::spazio[i][j] == 'S' || campo::spazio[i][j] == 'B' || campo::spazio[i][j] == '?' || campo::spazio[i][j] == 'V')
 			{
 				
 				if (i <= campo::macchina.riga) // controllo che a livello della macchina cancellano le o deve controllare collisioni
 					campo::spazio[i + 1][j] = campo::spazio[i][j]; // da migliorare perché cancella anche la macchina 
 
+
 				campo::spazio[i][j] = ' ';		
 			}
 
 		}
 	}
-
 }
 
 
@@ -332,6 +329,7 @@ void campo::aggiungiOstacoli() {
 			break;
 		case 5:
 			limiteSotto = 3;
+			limiteSopra = 21;
 				ost = '?';
 				campo::flagMacchina = 1;
 			break;
@@ -390,7 +388,6 @@ void campo::muoviMacchina(char l) {
 		case('A'):
 			if (campo::spazio[campo::macchina.riga][campo::macchina.colonna - 2] != '#')
 			{
-
 				campo::spazio[campo::macchina.riga - 1][campo::macchina.colonna] = ' ';
 				campo::spazio[campo::macchina.riga + 1][campo::macchina.colonna] = ' ';
 				campo::spazio[campo::macchina.riga][campo::macchina.colonna + 1] = ' ';
@@ -399,9 +396,9 @@ void campo::muoviMacchina(char l) {
 
 				campo::scriviMacchina();
 			}
-
 			else
 				cout << "non puoi andare di qua";//implementare una scritta piú efficace
+
 			break;
 
 		case('d'):
