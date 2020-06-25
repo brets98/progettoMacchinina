@@ -77,21 +77,20 @@ void campo::stampa() {
 					for (l = 0; l < 10; l++) {
 					
 						if (k > 0) {
-							campo::spazio[i+1][l + j] = 178;
+							campo::spazio[i+1][l + j] = QUAD_PIENO;
 							k--;
 						}
 						else {
-							campo::spazio[i+1][l + j] = 176;
+							campo::spazio[i+1][l + j] = QUAD_VUOTO;
 						}
 					}
 				}
 				else if (campo::immunità) {
-					cout << "SEI IMMUNE";
-				}
-				
+					cout << "|| SEI IMMUNE ||";
+				}	
 			}
 			else
-				cout << campo::spazio[i][j] << " ";
+				cout << campo::spazio[i][j] << ' ';
 		}
 		cout << "\n";
 	}
@@ -153,7 +152,7 @@ void campo::sconfitta() {
 	campo::benzina = 100;
 	system("pause");
 }
-void campo::cosaMiHaColpito(bool preso, int riga, int colonna) {
+void campo::cosaMiHaColpito(bool *preso, int riga, int colonna) {
 
 	switch (campo::spazio[riga][colonna]) {
 
@@ -163,7 +162,7 @@ void campo::cosaMiHaColpito(bool preso, int riga, int colonna) {
 		if (!immunità) {
 
 			campo::punti = campo::punti - (10*campo::livello);
-			preso = true;
+			*preso = true;
 			if (campo::punti < 0)
 				campo::sconfitta();
 		}
@@ -175,7 +174,7 @@ void campo::cosaMiHaColpito(bool preso, int riga, int colonna) {
 
 		if (!immunità) {
 			campo::punti = campo::punti - 10;
-			preso = true;
+			*preso = true;
 			if (campo::punti < 0)
 				campo::sconfitta();
 		}
@@ -226,7 +225,7 @@ void campo::cosaMiHaColpito(bool preso, int riga, int colonna) {
 
 		if (!immunità) {
 			campo::punti = campo::punti - 10;
-			preso = true;
+			*preso = true;
 			if (campo::punti < 0)
 				campo::sconfitta();
 		}
@@ -273,15 +272,148 @@ void campo::cosaMiHaColpito(bool preso, int riga, int colonna) {
 
 void campo::colpito() {  // per farlo un po piú carino si puó scrivere un funzione e chiamarla sempre con var diverse
 
-	bool preso = false;
+	bool *preso;
+	preso = new bool;
+	*preso = false;
 
 	campo::cosaMiHaColpito(preso, campo::macchina.riga, campo::macchina.colonna + 1);
 	campo::cosaMiHaColpito(preso, campo::macchina.riga, campo::macchina.colonna - 1);
 	campo::cosaMiHaColpito(preso, campo::macchina.riga - 1, campo::macchina.colonna);
+	campo::cosaMiHaColpito(preso, campo::macchina.riga, campo::macchina.colonna);
 
-	if (!preso) {
+	if (!*preso) {
 		campo::punti = campo::punti + 1;
 	}
+
+	if (campo::punti < 100)
+		campo::livello = 1;
+	else
+		campo::livello = campo::punti / 100;
+}
+
+void campo::colpito_InMovimento(char ostacolo, int riga, int colonna) {
+
+	bool meno_punti = false;
+
+	switch (ostacolo) {
+
+	case('O'):
+	case('E'): //OSTACOLI COMUNI
+
+		if (!immunità) {
+
+			campo::punti = campo::punti - (10 * campo::livello);
+			if (campo::punti < 0)
+				campo::sconfitta();
+			
+			meno_punti = true;
+		}
+		else
+			campo::immunità = false;
+		break;
+
+	case('?'): //MACCHINA NEMICA
+
+		if (!immunità) {
+			campo::punti = campo::punti - 10;
+			if (campo::punti < 0)
+				campo::sconfitta();
+
+			meno_punti = true;
+		}
+		else
+			campo::immunità = false;
+
+		//Cancello l'ostacolo macchina
+
+		if (campo::spazio[riga][colonna - 1] == 'V') { //colpito da macchina tutta a sinistra
+
+			campo::spazio[riga][colonna - 1] = ' ';
+			campo::spazio[riga][colonna - 2] = ' ';
+			campo::spazio[riga - 1][colonna - 1] = ' ';
+			campo::spazio[riga + 1][colonna - 1] = ' ';
+
+		}
+		else if (campo::spazio[riga][colonna + 1] == 'V') { //colpito da macchina tutta a destra 
+
+
+			campo::spazio[riga][colonna + 1] = ' ';
+			campo::spazio[riga][colonna + 2] = ' ';
+			campo::spazio[riga + 1][colonna + 1] = ' ';
+			campo::spazio[riga - 1][colonna + 1] = ' ';
+
+		}
+		else { //colpito da macchina parzialmente a destra o a sinistra o sopra
+			campo::spazio[riga - 1][colonna] = ' ';
+			campo::spazio[riga - 2][colonna] = ' ';
+		}
+
+		if (campo::spazio[riga - 1][colonna + 1] == '*') { //colpito da sinistra
+			campo::spazio[riga - 1][colonna - 1] = ' ';
+			campo::spazio[riga - 1][colonna + 1] = '*';
+		}
+		else if (campo::spazio[riga - 1][colonna - 1] == '*') { //colpito da destra
+			campo::spazio[riga - 1][colonna + 1] = ' ';
+			campo::spazio[riga - 1][colonna - 1] = '*';
+		}
+		else { //colpito da sopra
+			campo::spazio[riga - 1][colonna - 1] = ' ';
+			campo::spazio[riga - 1][colonna + 1] = ' ';
+		}
+
+		break;
+
+	case('V'): //MACCHINA NEMICA
+
+
+		if (!immunità) {
+			campo::punti = campo::punti - 10;
+			if (campo::punti < 0)
+				campo::sconfitta();
+
+			meno_punti = true;
+		}
+		else
+			campo::immunità = false;
+
+		//Cancello l'ostacolo macchina
+
+		if (campo::spazio[riga][colonna + 1] == 'A' || campo::spazio[riga][colonna - 1] == 'A') { //colpito da sinistra
+
+			campo::spazio[riga - 1][colonna] = ' ';
+			campo::spazio[riga + 1][colonna] = ' ';
+			campo::spazio[riga][colonna - 1] = ' ';
+			campo::spazio[riga][colonna + 1] = 'A';
+		}
+		else { //colpito da sopra
+			campo::spazio[riga - 1][colonna] = ' ';
+			campo::spazio[riga][colonna + 1] = ' ';
+			campo::spazio[riga][colonna - 1] = ' ';
+		}
+
+
+		break;
+
+	case('S'): //IMMUNITA'
+
+		campo::immunità = true;
+		break;
+
+	case('B'): //BENZINA
+
+		campo::benzina = campo::benzina + 50;
+		if (campo::benzina > 100)
+			campo::benzina = 101;
+
+		cout << "PIU' BENZINA!!";
+		break;
+
+	default:
+		break;
+	}
+
+	if(!meno_punti)
+		campo::punti = campo::punti + 1;
 
 	if (campo::punti < 100)
 		campo::livello = 1;
@@ -378,9 +510,42 @@ void campo::scriviLevel() {
 
 	campo::spazio[18][27] = '$';
 
-	campo::spazio[22][27] = '%';
+	campo::spazio[21][27] = '%';
 }
+
+char* campo::memOstacoli(char vett_ostacoli[]) {
+
+	char *ostacolo_sopra = &campo::spazio[campo::macchina.riga - 1][campo::macchina.colonna];
+	char *ostacolo_destra = &campo::spazio[campo::macchina.riga][campo::macchina.colonna + 1];
+	char *ostacolo_sinistra = &campo::spazio[campo::macchina.riga][campo::macchina.colonna - 1];
+
+	vett_ostacoli[0] = ' ';
+	vett_ostacoli[1] = ' ';
+	vett_ostacoli[2] = ' ';
+
+	//ostacolo sopra
+	if( *ostacolo_sopra != '*') 
+	vett_ostacoli[0] = *ostacolo_sopra;
+
+	//ostacolo destra
+	if( *ostacolo_destra != '*')
+	vett_ostacoli[1] = *ostacolo_destra;
+
+	//ostacolo sinistra
+	if(*ostacolo_sinistra != '*')
+	vett_ostacoli[2] = *ostacolo_sinistra;
+
+		return (vett_ostacoli);
+}
+
 void campo::muoviMacchina(char l) {
+
+	char vett_ostacoli[3];
+	char *p_vett;
+	int pos_ostacolo;
+
+	p_vett = memOstacoli(vett_ostacoli);
+
 	if (l == 'a' || l == 'A' || l == 'd' || l == 'D' || l == 'w' || l == 'W') {
 		
 		switch (l) {
@@ -388,12 +553,13 @@ void campo::muoviMacchina(char l) {
 		case('A'):
 			if (campo::spazio[campo::macchina.riga][campo::macchina.colonna - 2] != '#')
 			{
-				campo::spazio[campo::macchina.riga - 1][campo::macchina.colonna] = ' ';
-				campo::spazio[campo::macchina.riga + 1][campo::macchina.colonna] = ' ';
-				campo::spazio[campo::macchina.riga][campo::macchina.colonna + 1] = ' ';
+
+					campo::spazio[campo::macchina.riga - 1][campo::macchina.colonna] = vett_ostacoli[0]; //Stellina sopra
+					campo::spazio[campo::macchina.riga + 1][campo::macchina.colonna] = ' ';				 //Stellina sotto
+					campo::spazio[campo::macchina.riga][campo::macchina.colonna + 1] = vett_ostacoli[1]; //Stellina sinistra
+				
 
 				campo::macchina.colonna = campo::macchina.colonna - 1;
-
 				campo::scriviMacchina();
 			}
 			else
@@ -405,13 +571,14 @@ void campo::muoviMacchina(char l) {
 		case('D'): // qua vanno aggiunti i controlli di collisione
 			if (campo::spazio[campo::macchina.riga][campo::macchina.colonna + 2] != '#') {
 
-				campo::spazio[campo::macchina.riga - 1][campo::macchina.colonna] = ' ';
-				campo::spazio[campo::macchina.riga + 1][campo::macchina.colonna] = ' ';
-				campo::spazio[campo::macchina.riga][campo::macchina.colonna - 1] = ' ';
+
+				campo::spazio[campo::macchina.riga - 1][campo::macchina.colonna] = vett_ostacoli[0]; //Stellina sopra
+				campo::spazio[campo::macchina.riga + 1][campo::macchina.colonna] = ' ';				 //Stellina sotto
+				campo::spazio[campo::macchina.riga][campo::macchina.colonna - 1] = vett_ostacoli[2]; //Stellina sinistra
 
 				campo::macchina.colonna = campo::macchina.colonna + 1;
-
 				campo::scriviMacchina();
+
 			}
 			else
 				cout << "non puoi andare di qua";//implementare una scritta piú efficace

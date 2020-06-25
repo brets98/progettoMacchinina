@@ -2,6 +2,8 @@
 #include <iostream>
 #include <time.h>
 #include <conio.h>
+#include "utili.h"
+
 using namespace std;
 
 class campo {
@@ -32,9 +34,11 @@ public:
 	void regolamento();
 	void sconfitta();
 	void colpito();//ancora da impplement
+	void colpito_InMovimento(char ostacolo, int riga, int colonna);
 	void aggiungiOstacoli();
 	void scriviMacchina();
 	void scriviLevel();
-	void muoviMacchina(char);
-	void cosaMiHaColpito(bool, int, int);
+	char* memOstacoli(char vett_ostacoli[]);
+	void muoviMacchina(char l);
+	void cosaMiHaColpito(bool *preso , int, int);
 };
