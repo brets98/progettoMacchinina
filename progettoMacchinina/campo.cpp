@@ -114,6 +114,9 @@ void campo::stampa() {
 
 
 
+
+
+
 void campo::sigla() {
 
 	cout << " -------------------------------\n";
@@ -152,120 +155,127 @@ void campo::sconfitta() {
 	campo::benzina = 100;
 	system("pause");
 }
-void campo::cosaMiHaColpito(bool *preso, int riga, int colonna) {
+void campo::cosaMiHaColpito(bool* preso, int riga, int colonna) {
 
 	switch (campo::spazio[riga][colonna]) {
 
-	case('O'):
-	case('E'): //OSTACOLI COMUNI
+		case('O'):
+			break;
+		case('E'): //OSTACOLI COMUNI
 
-		if (!immunità) {
+			if (!immunità) {
 
-			campo::punti = campo::punti - (10*campo::livello);
-			*preso = true;
-			if (campo::punti < 0)
-				campo::sconfitta();
-		}
-		else
-			campo::immunità = false;
+				campo::punti = campo::punti - (10 * campo::livello);
+				*preso = true;
+				if (campo::punti < 0)
+					campo::sconfitta();
+			}
+			else
+				campo::immunità = false;
+			break;
+
+			case('?'): //MACCHINA NEMICA
+
+			if (!immunità) {
+				campo::punti = campo::punti - 10;
+				*preso = true;
+				if (campo::punti < 0)
+					campo::sconfitta();
+			}
+			else
+				campo::immunità = false;
+
+			//Cancello l'ostacolo macchina
+			if (campo::spazio[riga][colonna - 1] == 'V') { //colpito da macchina tutta a sinistra
+
+				campo::spazio[riga][colonna - 1] = ' ';
+				campo::spazio[riga][colonna - 2] = ' ';
+				campo::spazio[riga - 1][colonna - 1] = ' ';
+				campo::spazio[riga + 1][colonna - 1] = ' ';
+
+			}
+			else if (campo::spazio[riga][colonna + 1] == 'V') { //colpito da macchina tutta a destra 
+				
+				campo::spazio[riga][colonna + 1] = ' ';
+				campo::spazio[riga][colonna + 2] = ' ';
+				campo::spazio[riga + 1][colonna + 1] = ' ';
+				campo::spazio[riga - 1][colonna + 1] = ' ';
+
+
+			}
+			else { //colpito da macchina parzialmente a destra o a sinistra o sopra
+				campo::spazio[riga - 1][colonna] = ' ';
+				campo::spazio[riga - 2][colonna] = ' ';
+
+			}
+
+			if (campo::spazio[riga - 1][colonna + 1] == '*') { //colpito da sinistra
+				campo::spazio[riga - 1][colonna - 1] = ' ';
+				campo::spazio[riga - 1][colonna + 1] = '*';
+
+			}
+			else if (campo::spazio[riga - 1][colonna - 1] == '*') { //colpito da destra
+				campo::spazio[riga - 1][colonna + 1] = ' ';
+				campo::spazio[riga - 1][colonna - 1] = '*';
+
+			}
+			else { //colpito da sopra
+				campo::spazio[riga - 1][colonna - 1] = ' ';
+				campo::spazio[riga - 1][colonna + 1] = ' ';
+
+			}
 		break;
 
-	case('?'): //MACCHINA NEMICA
-
-		if (!immunità) {
-			campo::punti = campo::punti - 10;
-			*preso = true;
-			if (campo::punti < 0)
-				campo::sconfitta();
-		}
-		else
-			campo::immunità = false;
-
-		//Cancello l'ostacolo macchina
-
-		if (campo::spazio[riga][colonna - 1] == 'V') { //colpito da macchina tutta a sinistra
-
-			campo::spazio[riga][colonna - 1] = ' ';
-			campo::spazio[riga][colonna - 2] = ' ';
-			campo::spazio[riga - 1][colonna - 1] = ' ';
-			campo::spazio[riga + 1][colonna - 1] = ' ';
-
-		}
-		else if (campo::spazio[riga][colonna + 1] == 'V') { //colpito da macchina tutta a destra 
+		case('V'): //MACCHINA NEMICA
 
 
-			campo::spazio[riga][colonna + 1] = ' ';
-			campo::spazio[riga][colonna + 2] = ' ';
-			campo::spazio[riga + 1][colonna + 1] = ' ';
-			campo::spazio[riga - 1][colonna + 1] = ' ';
+			if (!immunità) {
+				campo::punti = campo::punti - 10;
+				*preso = true;
+				if (campo::punti < 0)
+					campo::sconfitta();
+			}
+			else
+				campo::immunità = false;
 
-		}
-		else { //colpito da macchina parzialmente a destra o a sinistra o sopra
-			campo::spazio[riga - 1][colonna] = ' ';
-			campo::spazio[riga - 2][colonna] = ' ';
-		}
+			//Cancello l'ostacolo macchina
 
-		if (campo::spazio[riga - 1][colonna + 1] == '*') { //colpito da sinistra
-			campo::spazio[riga - 1][colonna - 1] = ' ';
-			campo::spazio[riga - 1][colonna + 1] = '*';
-		}
-		else if (campo::spazio[riga - 1][colonna - 1] == '*') { //colpito da destra
-			campo::spazio[riga - 1][colonna + 1] = ' ';
-			campo::spazio[riga - 1][colonna - 1] = '*';
-		}
-		else { //colpito da sopra
-			campo::spazio[riga - 1][colonna - 1] = ' ';
-			campo::spazio[riga - 1][colonna + 1] = ' ';
-		}
+			if (campo::spazio[riga][colonna + 1] == 'A' || campo::spazio[riga][colonna - 1] == 'A') { //colpito da sinistra
 
-		break;
+				campo::spazio[riga - 1][colonna] = ' ';
+				campo::spazio[riga + 1][colonna] = ' ';
+				campo::spazio[riga][colonna - 1] = ' ';
+				campo::spazio[riga][colonna + 1] = 'A';
 
-	case('V'): //MACCHINA NEMICA
+			}
+			else { //colpito da sopra
+				campo::spazio[riga - 1][colonna] = ' ';
+				campo::spazio[riga][colonna + 1] = ' ';
+				campo::spazio[riga][colonna - 1] = ' ';
+				campo::spazio[riga + 1][colonna] = ' ';
 
 
-		if (!immunità) {
-			campo::punti = campo::punti - 10;
-			*preso = true;
-			if (campo::punti < 0)
-				campo::sconfitta();
-		}
-		else
-			campo::immunità = false;
-
-		//Cancello l'ostacolo macchina
-
-		if (campo::spazio[riga][colonna + 1] == 'A' || campo::spazio[riga][colonna - 1] == 'A') { //colpito da sinistra
-
-			campo::spazio[riga - 1][colonna] = ' ';
-			campo::spazio[riga + 1][colonna] = ' ';
-			campo::spazio[riga][colonna - 1] = ' ';
-			campo::spazio[riga][colonna + 1] = 'A';
-		}
-		else { //colpito da sopra
-			campo::spazio[riga - 1][colonna] = ' ';
-			campo::spazio[riga][colonna + 1] = ' ';
-			campo::spazio[riga][colonna - 1] = ' ';
-		}
+			}
 
 
-		break;
+			break;
 
-	case('S'): //IMMUNITA'
+		case('S'): //IMMUNITA'
 
-		campo::immunità = true;
-		break;
+			campo::immunità = true;
+			break;
 
-	case('B'): //BENZINA
-		
-		campo::benzina = campo::benzina+50;
-		if (campo::benzina > 100)
-			campo::benzina = 101;
+		case('B'): //BENZINA
 
-		cout << "PIU' BENZINA!!";
-		break;
+			campo::benzina = campo::benzina + 50;
+			if (campo::benzina > 100)
+				campo::benzina = 101;
 
-	default:
-		break;
+			cout << "PIU' BENZINA!!";
+			break;
+
+		default:
+			break;
 	}
 }
 
@@ -554,13 +564,15 @@ void campo::muoviMacchina(char l) {
 			if (campo::spazio[campo::macchina.riga][campo::macchina.colonna - 2] != '#')
 			{
 
-					campo::spazio[campo::macchina.riga - 1][campo::macchina.colonna] = vett_ostacoli[0]; //Stellina sopra
-					campo::spazio[campo::macchina.riga + 1][campo::macchina.colonna] = ' ';				 //Stellina sotto
-					campo::spazio[campo::macchina.riga][campo::macchina.colonna + 1] = vett_ostacoli[1]; //Stellina sinistra
+
 				
+				campo::spazio[campo::macchina.riga - 1][campo::macchina.colonna] = vett_ostacoli[0]; //Stellina sopra
+				campo::spazio[campo::macchina.riga + 1][campo::macchina.colonna] = ' ';				 //Stellina sotto
+				campo::spazio[campo::macchina.riga][campo::macchina.colonna + 1] = vett_ostacoli[1]; //Stellina sinistra
 
 				campo::macchina.colonna = campo::macchina.colonna - 1;
 				campo::scriviMacchina();
+
 			}
 			else
 				cout << "non puoi andare di qua";//implementare una scritta piú efficace
@@ -571,13 +583,13 @@ void campo::muoviMacchina(char l) {
 		case('D'): // qua vanno aggiunti i controlli di collisione
 			if (campo::spazio[campo::macchina.riga][campo::macchina.colonna + 2] != '#') {
 
-
 				campo::spazio[campo::macchina.riga - 1][campo::macchina.colonna] = vett_ostacoli[0]; //Stellina sopra
 				campo::spazio[campo::macchina.riga + 1][campo::macchina.colonna] = ' ';				 //Stellina sotto
 				campo::spazio[campo::macchina.riga][campo::macchina.colonna - 1] = vett_ostacoli[2]; //Stellina sinistra
 
 				campo::macchina.colonna = campo::macchina.colonna + 1;
 				campo::scriviMacchina();
+
 
 			}
 			else
