@@ -160,14 +160,25 @@ void campo::cosaMiHaColpito(bool* preso, int riga, int colonna) {
 	switch (campo::spazio[riga][colonna]) {
 
 		case('O'):
+
+			if (!immunità) {
+
+				campo::punti = campo::punti - (1 * campo::livello);
+				*preso = true;
+				if (campo::punti <= 0)
+					campo::sconfitta();
+			}
+			else
+				campo::immunità = false;
 			break;
+
 		case('E'): //OSTACOLI COMUNI
 
 			if (!immunità) {
 
 				campo::punti = campo::punti - (10 * campo::livello);
 				*preso = true;
-				if (campo::punti < 0)
+				if (campo::punti <= 0)
 					campo::sconfitta();
 			}
 			else
@@ -179,7 +190,7 @@ void campo::cosaMiHaColpito(bool* preso, int riga, int colonna) {
 			if (!immunità) {
 				campo::punti = campo::punti - 10;
 				*preso = true;
-				if (campo::punti < 0)
+				if (campo::punti <= 0)
 					campo::sconfitta();
 			}
 			else
@@ -232,7 +243,7 @@ void campo::cosaMiHaColpito(bool* preso, int riga, int colonna) {
 			if (!immunità) {
 				campo::punti = campo::punti - 10;
 				*preso = true;
-				if (campo::punti < 0)
+				if (campo::punti <= 0)
 					campo::sconfitta();
 			}
 			else
@@ -301,6 +312,7 @@ void campo::colpito() {  // per farlo un po piú carino si puó scrivere un funzio
 		campo::livello = campo::punti / 100;
 }
 
+/*
 void campo::colpito_InMovimento(char ostacolo, int riga, int colonna) {
 
 	bool meno_punti = false;
@@ -313,7 +325,7 @@ void campo::colpito_InMovimento(char ostacolo, int riga, int colonna) {
 		if (!immunità) {
 
 			campo::punti = campo::punti - (10 * campo::livello);
-			if (campo::punti < 0)
+			if (campo::punti <= 0)
 				campo::sconfitta();
 			
 			meno_punti = true;
@@ -326,7 +338,7 @@ void campo::colpito_InMovimento(char ostacolo, int riga, int colonna) {
 
 		if (!immunità) {
 			campo::punti = campo::punti - 10;
-			if (campo::punti < 0)
+			if (campo::punti <= 0)
 				campo::sconfitta();
 
 			meno_punti = true;
@@ -378,7 +390,7 @@ void campo::colpito_InMovimento(char ostacolo, int riga, int colonna) {
 
 		if (!immunità) {
 			campo::punti = campo::punti - 10;
-			if (campo::punti < 0)
+			if (campo::punti <= 0)
 				campo::sconfitta();
 
 			meno_punti = true;
@@ -430,7 +442,7 @@ void campo::colpito_InMovimento(char ostacolo, int riga, int colonna) {
 	else
 		campo::livello = campo::punti / 100;
 }
-
+*/
 
 // Lettere utilizzate = O E S T V
 

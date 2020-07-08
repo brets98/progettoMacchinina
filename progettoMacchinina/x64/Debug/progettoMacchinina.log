@@ -1,6 +1,6 @@
 ﻿  campo.cpp
-G:\Programmi\progettoMacchinina\progettoMacchinina\progettoMacchinina\campo.cpp(80,36): warning C4309: '=': truncation of constant value
-G:\Programmi\progettoMacchinina\progettoMacchinina\progettoMacchinina\campo.cpp(84,36): warning C4309: '=': truncation of constant value
-G:\Programmi\progettoMacchinina\progettoMacchinina\progettoMacchinina\campo.cpp(441,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
-G:\Programmi\progettoMacchinina\progettoMacchinina\progettoMacchinina\campo.cpp(555,6): warning C4101: 'pos_ostacolo': unreferenced local variable
-  progettoMacchinina.vcxproj -> G:\Programmi\progettoMacchinina\progettoMacchinina\x64\Debug\progettoMacchinina.exe
+c:\users\marti\source\repos\progettomacchinina\progettomacchinina\campo.cpp(80): warning C4309: '=': troncamento di valore costante
+c:\users\marti\source\repos\progettomacchinina\progettomacchinina\campo.cpp(84): warning C4309: '=': troncamento di valore costante
+c:\users\marti\source\repos\progettomacchinina\progettomacchinina\campo.cpp(453): warning C4244: 'argomento': conversione da 'time_t' a 'unsigned int'. Possibile perdita di dati.
+c:\users\marti\source\repos\progettomacchinina\progettomacchinina\campo.cpp(567): warning C4101: 'pos_ostacolo': variabile locale senza riferimenti
+  progettoMacchinina.vcxproj -> C:\Users\marti\source\repos\progettoMacchinina\x64\Debug\progettoMacchinina.exe
