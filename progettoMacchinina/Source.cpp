@@ -11,7 +11,7 @@ int main() {
 	bool sconfitta = false;
 	char sino;
 
-	campo i(30, 40, 0, 1, false);
+	campo i(RIGHE_CAMPO, COLONNE_CAMPO, 0, 1, false);
 	i.sigla();
 	system("pause");
 	system("cls");
@@ -23,7 +23,7 @@ int main() {
 		while (logical)
 		{
 			system("cls");
-			campo c(30, 40, 0, 1, false);
+			campo c(RIGHE_CAMPO, COLONNE_CAMPO, 0, 1, false);
 			c.stampa();
 			system("pause");
 

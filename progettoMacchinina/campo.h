@@ -15,7 +15,7 @@ protected:
 	coordinateMacchina macchina;
 	int righe, colonne;
 	int punti;
-	char spazio[40][40];
+	char spazio[RIGHECAMP_TOT][COLONNE_CAMPO];
 	int livello;
 	bool immunità;
 	int righeDiff;
@@ -29,16 +29,15 @@ public:
 
 	//METODI
 	campo(int a, int b, int p, int l, bool im);
-	void stampa();
-	void sigla();
-	void regolamento();
-	void sconfitta();
-	void colpito();//ancora da impplement
-	void colpito_InMovimento(char ostacolo, int riga, int colonna);
-	void aggiungiOstacoli();
-	void scriviMacchina();
-	void scriviLevel();
+	void  stampa();
+	void  sigla();
+	void  regolamento();
+	void  sconfitta();
+	void  colpito(); 
+	void  aggiungiOstacoli();
+	void  scriviMacchina();
+	void  scriviLevel();
 	char* memOstacoli(char vett_ostacoli[]);
-	void muoviMacchina(char l);
-	void cosaMiHaColpito(bool *preso , int, int);
+	void  muoviMacchina(char l);
+	void  cosaMiHaColpito(bool *preso , int, int);
 };

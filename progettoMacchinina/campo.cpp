@@ -2,7 +2,7 @@
 #include <windows.h>
 #include <cstdlib>
 
-campo::campo(int a, int b, int p, int l, bool im) {
+campo::campo(int a, int b, int p, int l, bool im) { //Costruttore che inizializza il campo, imposta i bordi e segna vuote tutte le altre caselle
 
 	campo::righe = a;//a sono le righe
 	campo::colonne = b;//b sono le colonne 
@@ -38,8 +38,6 @@ campo::campo(int a, int b, int p, int l, bool im) {
 	}
 
 	campo::scriviLevel();
-	//campo::spazio[14][33] = per far stampare dei punti secondo me va usato un carattere speciale 
-	//crea la pedina
 
 	//inizializza tutti i valori relativi agli indirizzi della macchina
 	campo::macchina.riga = campo::righe - 3; // SOLLEVO DI 3 LA MACCHININA 
@@ -56,18 +54,18 @@ void campo::stampa() {
 	}
 	else k = 1;
 
-	int i, j, l;
+	int i, j, l; //indici rispettivamente di riga, colonna e conta dei livelli
 
 	for (i = 0; i < campo::righe; i++) {
 		for (j = 0; j < campo::colonne; j++) {
-
-			if (campo::spazio[i][j] == '&' || campo::spazio[i][j] == '+' || campo::spazio[i][j] == '$' || campo::spazio[i][j] == '%') // il $ sta per benzina
+			//Controllo i caratteri speciali per scrivere le info a lato
+			if (campo::spazio[i][j] == NUM_PUNTI || campo::spazio[i][j] == NUM_LEVEL || campo::spazio[i][j] == INFO_BENZ || campo::spazio[i][j] == INFO_IMM) 
 			{	
-				if (campo::spazio[i][j] == '&')
-					cout << campo::punti; // & é il carattere speciale che sta ad identificare i punti, cosí da non dover sempre passare una variabile intera
-				else if (campo::spazio[i][j] == '+')
+				if (campo::spazio[i][j] == NUM_PUNTI)
+					cout << campo::punti; 
+				else if (campo::spazio[i][j] == NUM_LEVEL)
 					cout << campo::livello;
-				else if (campo::spazio[i][j] == '$'){
+				else if (campo::spazio[i][j] == INFO_BENZ){
 
 					cout << "Benzina: " << campo::benzina;
 
@@ -86,22 +84,22 @@ void campo::stampa() {
 					cout << "|| SEI IMMUNE ||";
 				}	
 			}
-			else if (i == 24 && j == 27) {
+			else if (i == I_INFO && j == J_INFO) { //Scrive a destra info su cosa è stato colpito
 
-				if (campo::spazio[i][j] == 'O') {
+				if (campo::spazio[i][j] == BUCA) {
 
 					cout << " [ HAI PRESO UNA BUCA, -" << 1 * campo::livello << " PUNTI ]";
 				}
-				else if (campo::spazio[i][j] == 'E') {
+				else if (campo::spazio[i][j] == GUARDRAIL) {
 					cout << " [ HAI COLPITO UN GUARDRAIL, -" << 10 * campo::livello << " PUNTI ]";
 				}
-				else if (campo::spazio[i][j] == 'V') {
+				else if (campo::spazio[i][j] == MACCHINA) {
 					cout << " [ HAI COLPITO UNA MACCHINA NEMICA, -" << (30 * campo::livello) << " PUNTI ]";
 				}
-				else if (campo::spazio[i][j] == 'B') {
+				else if (campo::spazio[i][j] == BENZINA) {
 					cout << " [ PIU' BENZINA ]";
 				}
-				else if (campo::spazio[i][j] == 'S') {
+				else if (campo::spazio[i][j] == IMMUNITA) {
 					cout << " [ HAI PERSO LA TUA IMMUNITA' ]";
 				}
 				else
@@ -120,11 +118,11 @@ void campo::stampa() {
 	{
 		for (j = campo::colonne - 15;  j >= 1; j--)
 		{
-			if (campo::spazio[i][j] == 'O' || campo::spazio[i][j] == 'E' || campo::spazio[i][j] == 'S' || campo::spazio[i][j] == 'B' || campo::spazio[i][j] == '?' || campo::spazio[i][j] == 'V')
+			if (campo::spazio[i][j] == BUCA || campo::spazio[i][j] == GUARDRAIL || campo::spazio[i][j] == IMMUNITA || campo::spazio[i][j] == BENZINA || campo::spazio[i][j] == R_MACCHINA || campo::spazio[i][j] == MACCHINA)
 			{
 				
 				if (i <= campo::macchina.riga) // controllo che a livello della macchina cancellano le o deve controllare collisioni
-					campo::spazio[i + 1][j] = campo::spazio[i][j]; // da migliorare perché cancella anche la macchina 
+					campo::spazio[i + 1][j] = campo::spazio[i][j];
 
 
 				campo::spazio[i][j] = ' ';		
@@ -148,17 +146,17 @@ void campo::sigla() {
 
 
 void campo::regolamento() {
-	cout << "*******************\n";
-	cout << "* REGOLE DI GIOCO *\n";
-	cout << "*******************\n\n";
+	cout << "                               *******************\n";
+	cout << "                               * REGOLE DI GIOCO *\n";
+	cout << "                               *******************\n\n";
 	cout << "*          Il gioco consiste nel far muovere l'auto ( indentificata da: A )\n";
 	cout << "*    e farla correre lungo il percorso evitando gli ostacoli presenti, guadagnando \n";
 	cout << "*      punti e salendo di livello (Il primo dopo 200 punti, gli altri ogni 100).\n";
     cout << "*       Se colpisci un ostacolo perdi punti e quando arrivi a 0 punti hai perso!\n";
-	cout << "*               FA DEL TUO MEGLIO E ACCUMULA SEMPRE PIU' PUNTI!\n\n";
-	cout << "                            *************\n";
-	cout << "                            * MOVIMENTI *\n";
-	cout << "                            *************\n\n";
+	cout << "*                  FA DEL TUO MEGLIO E ACCUMULA SEMPRE PIU' PUNTI!\n\n";
+	cout << "                                  *************\n";
+	cout << "                                  * MOVIMENTI *\n";
+	cout << "                                  *************\n\n";
 	cout << "E' possibile muovere l'auto solo nelle direzioni destra -> e sinistra <- e avanti: \n\n";
 	cout << "A per far muovere l'auto a sinistra\n\n";
 	cout << "D per far muovere l'auto a destra\n\n";
@@ -173,19 +171,19 @@ void campo::sconfitta() {
 	cout << " ------------- \n";
 	cout << "|  HAI PERSO  |\n";
 	cout << " ------------- \n\n";
+
+	//ripristino parametri
 	campo::punti = 0;
 	campo::livello = 1;
 	campo::benzina = 100;
 
-
-
-	//system("pause");
 }
-void campo::cosaMiHaColpito(bool* preso, int riga, int colonna) {
+
+void campo::cosaMiHaColpito(bool* preso, int riga, int colonna) { //Prende in ingresso le posizioni della macchina e controlla se questa è stata colpita
 
 	switch (campo::spazio[riga][colonna]) {
 
-		case('O'):
+		case(BUCA):
 
 			if (!immunità) {
 
@@ -194,20 +192,17 @@ void campo::cosaMiHaColpito(bool* preso, int riga, int colonna) {
 				if (campo::punti <= 0)
 					campo::sconfitta();
 				
-				campo::spazio[24][27] = 'O';
-
-				//cout << "HAI PRESO UNA BUCA, -" << 1 * campo::livello << " PUNTI";
-				//Sleep(200);
+				campo::spazio[I_INFO][J_INFO] = BUCA; //Scrivo per far comparire la scritta informativa sul campo
 
 			}
 			else {
 				campo::immunità = false;
-				campo::spazio[24][27] = 'S';
+				campo::spazio[I_INFO][J_INFO] = IMMUNITA; //Scrivo per far comparire la scritta informativa sul campo
 			}
 
 			break;
 
-		case('E'): //OSTACOLI COMUNI
+		case(GUARDRAIL): 
 
 			if (!immunità) {
 
@@ -216,18 +211,17 @@ void campo::cosaMiHaColpito(bool* preso, int riga, int colonna) {
 				if (campo::punti <= 0)
 					campo::sconfitta();
 				
-				campo::spazio[24][27] = 'E';
-				//cout << " [ HAI COLPITO UN GUARDRAIL, -" << 10 * campo::livello << " PUNTI ]" << endl;
-				//Sleep(200);
+				campo::spazio[I_INFO][J_INFO] = GUARDRAIL; //Scrivo per far comparire la scritta informativa sul campo
+
 			}
 			else {
 				campo::immunità = false;
-				campo::spazio[24][27] = 'S';
+				campo::spazio[I_INFO][J_INFO] = IMMUNITA; //Scrivo per far comparire la scritta informativa sul campo
 			}
 
 			break;
 
-			case('?'): //MACCHINA NEMICA
+			case(R_MACCHINA): //MACCHINA NEMICA
 
 			if (!immunità) {
 				campo::punti = campo::punti - (30 * campo::livello);
@@ -235,14 +229,12 @@ void campo::cosaMiHaColpito(bool* preso, int riga, int colonna) {
 				if (campo::punti <= 0)
 					campo::sconfitta();
 
-				campo::spazio[24][27] = 'V';
+				campo::spazio[I_INFO][J_INFO] = MACCHINA; //Scrivo per far comparire la scritta informativa sul campo
 
-				//cout << "HAI COLPITO UNA MACCHINA NEMICA, -" << (30 * campo::livello) << " PUNTI" << endl;
-				//Sleep(200);
 			}
 			else {
 				campo::immunità = false;
-				campo::spazio[24][27] = 'S';
+				campo::spazio[I_INFO][J_INFO] = IMMUNITA; //Scrivo per far comparire la scritta informativa sul campo
 			}
 	
 
@@ -287,7 +279,7 @@ void campo::cosaMiHaColpito(bool* preso, int riga, int colonna) {
 			}
 		break;
 
-		case('V'): //MACCHINA NEMICA
+		case(MACCHINA): //MACCHINA NEMICA
 
 
 			if (!immunità) {
@@ -296,16 +288,11 @@ void campo::cosaMiHaColpito(bool* preso, int riga, int colonna) {
 				if (campo::punti <= 0)
 					campo::sconfitta();
 				
-				campo::spazio[24][27] = 'V';
-
-				//cout << "HAI COLPITO UNA MACCHINA NEMICA, -"<< (30 * campo::livello)<<" PUNTI" << endl;
-				//Sleep(200);
-
-
+				campo::spazio[I_INFO][J_INFO] = MACCHINA;
 			}
 			else {
 				campo::immunità = false;
-				campo::spazio[24][27] = 'S';
+				campo::spazio[I_INFO][J_INFO] = IMMUNITA;
 			}
 	
 
@@ -331,26 +318,18 @@ void campo::cosaMiHaColpito(bool* preso, int riga, int colonna) {
 
 			break;
 
-		case('S'): //IMMUNITA'
+		case(IMMUNITA): 
 
 			campo::immunità = true;
-			//cout << "IMMUNITA' ATTIVATA" << endl;
-			//Sleep(200);
-
 			break;
 
-		case('B'): //BENZINA
+		case(BENZINA): //BENZINA
 
 			campo::benzina = campo::benzina + 50;
 			if (campo::benzina > 100)
 				campo::benzina = 101;
 
-			campo::spazio[24][27] = 'B';
-
-			//cout << "PIU' BENZINA!!" << endl;
-			//Sleep(200);
-
-
+			campo::spazio[I_INFO][J_INFO] = BENZINA; //Scrivo il tipo di bonus preso per far comparire la scritta informativa sul campo
 			break;
 
 		default:
@@ -359,22 +338,25 @@ void campo::cosaMiHaColpito(bool* preso, int riga, int colonna) {
 }
 
 
-void campo::colpito() {  // per farlo un po piú carino si puó scrivere un funzione e chiamarla sempre con var diverse
+void campo::colpito() { 
 
 	bool *preso;
 	preso = new bool;
 	*preso = false;
 
-	campo::cosaMiHaColpito(preso, campo::macchina.riga, campo::macchina.colonna + 1);
+	//Controllo ogni parte della macchina per vedere se sia stata colpita, richiamando la funzione su * destro, sinistro, superiore e lettera A centrale
+	campo::cosaMiHaColpito(preso, campo::macchina.riga, campo::macchina.colonna + 1); 
 	campo::cosaMiHaColpito(preso, campo::macchina.riga, campo::macchina.colonna - 1);
 	campo::cosaMiHaColpito(preso, campo::macchina.riga - 1, campo::macchina.colonna);
 	campo::cosaMiHaColpito(preso, campo::macchina.riga, campo::macchina.colonna);
 
-	if (!*preso) {
+	//La funzione richiamata sopra mette a true il bool preso se la macchina è stata colpita
+	if (!*preso) { 
 		campo::punti = campo::punti + 1;
 	}
 
-	if (campo::punti < 100)
+	//Calcolo il livello in base ai punti
+	if (campo::punti < 100) 
 		campo::livello = 1;
 	else
 		campo::livello = campo::punti / 100;
@@ -457,7 +439,7 @@ void campo::scriviLevel() {
 	campo::spazio[14][30] = 'T';
 	campo::spazio[14][31] = 'I';
 	campo::spazio[14][32] = '=';
-	campo::spazio[14][33] = '&';
+	campo::spazio[14][33] = NUM_PUNTI;
 
 	campo::spazio[16][27] = 'L';
 	campo::spazio[16][28] = 'E';
@@ -465,14 +447,15 @@ void campo::scriviLevel() {
 	campo::spazio[16][30] = 'E';
 	campo::spazio[16][31] = 'L';
 	campo::spazio[16][32] = '=';
-	campo::spazio[16][33] = '+';
+	campo::spazio[16][33] = NUM_LEVEL;
 
-	campo::spazio[18][27] = '$';
+	campo::spazio[18][27] = INFO_BENZ;
 
-	campo::spazio[21][27] = '%';
+	campo::spazio[21][27] = INFO_IMM;
 }
 
-char* campo::memOstacoli(char vett_ostacoli[]) {
+//Funzione che memorizza come siano posizionati gli ostacoli intorno alla macchina, in modo da riscriverli una volta questa si muova
+char* campo::memOstacoli(char vett_ostacoli[]) { 
 
 	char *ostacolo_sopra = &campo::spazio[campo::macchina.riga - 1][campo::macchina.colonna];
 	char *ostacolo_destra = &campo::spazio[campo::macchina.riga][campo::macchina.colonna + 1];
@@ -543,7 +526,7 @@ void campo::muoviMacchina(char l) {
 
 			}
 			else
-				cout << "non puoi andare di qua";//implementare una scritta piú efficace
+				cout << "Non puoi andare di qua";
 			break;
 
 		case('w'):

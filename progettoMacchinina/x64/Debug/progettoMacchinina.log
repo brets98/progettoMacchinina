@@ -1,3 +1,9 @@
-﻿  Source.cpp
-g:\programmi\2\progettomacchinina\progettomacchinina\source.cpp(10): warning C4101: 'direzione': unreferenced local variable
-  progettoMacchinina.vcxproj -> G:\Programmi\2\progettoMacchinina\x64\Debug\progettoMacchinina.exe
+﻿  campo.cpp
+c:\users\marti\source\repos\progettomacchinina\progettomacchinina\campo.cpp(75): warning C4309: '=': troncamento di valore costante
+c:\users\marti\source\repos\progettomacchinina\progettomacchinina\campo.cpp(79): warning C4309: '=': troncamento di valore costante
+c:\users\marti\source\repos\progettomacchinina\progettomacchinina\campo.cpp(372): warning C4244: 'argomento': conversione da 'time_t' a 'unsigned int'. Possibile perdita di dati.
+c:\users\marti\source\repos\progettomacchinina\progettomacchinina\campo.cpp(487): warning C4101: 'pos_ostacolo': variabile locale senza riferimenti
+  Source.cpp
+c:\users\marti\source\repos\progettomacchinina\progettomacchinina\source.cpp(10): warning C4101: 'direzione': variabile locale senza riferimenti
+  Generazione del codice in corso...
+  progettoMacchinina.vcxproj -> C:\Users\marti\source\repos\progettoMacchinina\x64\Debug\progettoMacchinina.exe
