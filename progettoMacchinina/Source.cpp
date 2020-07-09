@@ -36,11 +36,13 @@ int main() {
 			}
 
 
-			cout << "Premere un qualsiasi numero per giocare di nuovo oppure 0 per finire" << endl;
+			cout << "Premere 0  tasto per giocare di nuovo" << endl;
 			cin >> sino;
 			if (sino == 0)
+				logical = true;
+			else
 				logical = false;
-			system("pause");
+			//system("pause");
 			
 		}
 		

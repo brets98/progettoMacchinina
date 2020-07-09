@@ -41,13 +41,9 @@ campo::campo(int a, int b, int p, int l, bool im) {
 	//campo::spazio[14][33] = per far stampare dei punti secondo me va usato un carattere speciale 
 	//crea la pedina
 
-	//inizializza tutti i valori relativi agli indirizzi della maccina
+	//inizializza tutti i valori relativi agli indirizzi della macchina
 	campo::macchina.riga = campo::righe - 3; // SOLLEVO DI 3 LA MACCHININA 
-	do
-	{
-		campo::macchina.colonna = 2 + rand() % 24;//prende un numero casuale tra 2 e 37 e lo mette nel numrto della colonna
-
-	} while (campo::spazio[i][j] == 'C');//non é mai uguale a B quindi fa una mandata e esce, in poche parole cervo dove mettere la "V"
+	campo::macchina.colonna = campo::colonne/3; //COLONNA CENTRALE
 
 	campo::scriviMacchina();
 };
@@ -90,9 +86,34 @@ void campo::stampa() {
 					cout << "|| SEI IMMUNE ||";
 				}	
 			}
+			else if (i == 24 && j == 27) {
+
+				if (campo::spazio[i][j] == 'O') {
+
+					cout << " [ HAI PRESO UNA BUCA, -" << 1 * campo::livello << " PUNTI ]";
+				}
+				else if (campo::spazio[i][j] == 'E') {
+					cout << " [ HAI COLPITO UN GUARDRAIL, -" << 10 * campo::livello << " PUNTI ]";
+				}
+				else if (campo::spazio[i][j] == 'V') {
+					cout << " [ HAI COLPITO UNA MACCHINA NEMICA, -" << (30 * campo::livello) << " PUNTI ]";
+				}
+				else if (campo::spazio[i][j] == 'B') {
+					cout << " [ PIU' BENZINA ]";
+				}
+				else if (campo::spazio[i][j] == 'S') {
+					cout << " [ HAI PERSO LA TUA IMMUNITA' ]";
+				}
+				else
+					cout << campo::spazio[i][j] << ' ';
+
+				campo::spazio[i][j] = ' ';
+
+			}
 			else
 				cout << campo::spazio[i][j] << ' ';
 		}
+
 		cout << "\n";
 	}
 	for (i = campo::righe - 1; i >= 1; i--)
@@ -130,10 +151,11 @@ void campo::regolamento() {
 	cout << "*******************\n";
 	cout << "* REGOLE DI GIOCO *\n";
 	cout << "*******************\n\n";
-	cout << "*       Il gioco consiste nel far muovere l'auto (indentificata da: V )\n";
-	cout << "*       e farla arrivare alla fine del percorso (ovvero dopo 100 passi)\n";
-	cout << "*    evitanto gli ostacoli presenti! Se invece l'auto colpisce un ostacolo\n";
-	cout << "*                            finisce la partita!\n\n";
+	cout << "*          Il gioco consiste nel far muovere l'auto ( indentificata da: A )\n";
+	cout << "*    e farla correre lungo il percorso evitando gli ostacoli presenti, guadagnando \n";
+	cout << "*      punti e salendo di livello (Il primo dopo 200 punti, gli altri ogni 100).\n";
+    cout << "*       Se colpisci un ostacolo perdi punti e quando arrivi a 0 punti hai perso!\n";
+	cout << "*               FA DEL TUO MEGLIO E ACCUMULA SEMPRE PIU' PUNTI!\n\n";
 	cout << "                            *************\n";
 	cout << "                            * MOVIMENTI *\n";
 	cout << "                            *************\n\n";
@@ -152,9 +174,12 @@ void campo::sconfitta() {
 	cout << "|  HAI PERSO  |\n";
 	cout << " ------------- \n\n";
 	campo::punti = 0;
-	campo::livello = 0;
+	campo::livello = 1;
 	campo::benzina = 100;
-	system("pause");
+
+
+
+	//system("pause");
 }
 void campo::cosaMiHaColpito(bool* preso, int riga, int colonna) {
 
@@ -168,12 +193,18 @@ void campo::cosaMiHaColpito(bool* preso, int riga, int colonna) {
 				*preso = true;
 				if (campo::punti <= 0)
 					campo::sconfitta();
-				cout << "HAI PRESO UNA BUCA, -" << 1 * campo::livello << " PUNTI";
-				Sleep(200);
+				
+				campo::spazio[24][27] = 'O';
+
+				//cout << "HAI PRESO UNA BUCA, -" << 1 * campo::livello << " PUNTI";
+				//Sleep(200);
 
 			}
-			else
+			else {
 				campo::immunità = false;
+				campo::spazio[24][27] = 'S';
+			}
+
 			break;
 
 		case('E'): //OSTACOLI COMUNI
@@ -184,14 +215,16 @@ void campo::cosaMiHaColpito(bool* preso, int riga, int colonna) {
 				*preso = true;
 				if (campo::punti <= 0)
 					campo::sconfitta();
-				cout << "HAI COLPITO UN OSTACOLO, -" << 10 * campo::livello << " PUNTI" << endl;
-				Sleep(200);
-
-
-
+				
+				campo::spazio[24][27] = 'E';
+				//cout << " [ HAI COLPITO UN GUARDRAIL, -" << 10 * campo::livello << " PUNTI ]" << endl;
+				//Sleep(200);
 			}
-			else
+			else {
 				campo::immunità = false;
+				campo::spazio[24][27] = 'S';
+			}
+
 			break;
 
 			case('?'): //MACCHINA NEMICA
@@ -201,11 +234,17 @@ void campo::cosaMiHaColpito(bool* preso, int riga, int colonna) {
 				*preso = true;
 				if (campo::punti <= 0)
 					campo::sconfitta();
-				cout << "HAI COLPITO UNA MACCHINA NEMICA, -" << (30 * campo::livello) << " PUNTI" << endl;
-				Sleep(200);
+
+				campo::spazio[24][27] = 'V';
+
+				//cout << "HAI COLPITO UNA MACCHINA NEMICA, -" << (30 * campo::livello) << " PUNTI" << endl;
+				//Sleep(200);
 			}
-			else
+			else {
 				campo::immunità = false;
+				campo::spazio[24][27] = 'S';
+			}
+	
 
 			//Cancello l'ostacolo macchina
 			if (campo::spazio[riga][colonna - 1] == 'V') { //colpito da macchina tutta a sinistra
@@ -256,13 +295,19 @@ void campo::cosaMiHaColpito(bool* preso, int riga, int colonna) {
 				*preso = true;
 				if (campo::punti <= 0)
 					campo::sconfitta();
-				cout << "HAI COLPITO UNA MACCHINA NEMICA, -"<< (30 * campo::livello)<<" PUNTI" << endl;
-				Sleep(200);
+				
+				campo::spazio[24][27] = 'V';
+
+				//cout << "HAI COLPITO UNA MACCHINA NEMICA, -"<< (30 * campo::livello)<<" PUNTI" << endl;
+				//Sleep(200);
 
 
 			}
-			else
+			else {
 				campo::immunità = false;
+				campo::spazio[24][27] = 'S';
+			}
+	
 
 			//Cancello l'ostacolo macchina
 
@@ -289,8 +334,8 @@ void campo::cosaMiHaColpito(bool* preso, int riga, int colonna) {
 		case('S'): //IMMUNITA'
 
 			campo::immunità = true;
-			cout << "IMMUNITA' ATTIVATA" << endl;
-			Sleep(200);
+			//cout << "IMMUNITA' ATTIVATA" << endl;
+			//Sleep(200);
 
 			break;
 
@@ -300,8 +345,10 @@ void campo::cosaMiHaColpito(bool* preso, int riga, int colonna) {
 			if (campo::benzina > 100)
 				campo::benzina = 101;
 
-			cout << "PIU' BENZINA!!" << endl;
-			Sleep(200);
+			campo::spazio[24][27] = 'B';
+
+			//cout << "PIU' BENZINA!!" << endl;
+			//Sleep(200);
 
 
 			break;
@@ -333,137 +380,6 @@ void campo::colpito() {  // per farlo un po piú carino si puó scrivere un funzio
 		campo::livello = campo::punti / 100;
 }
 
-/*
-void campo::colpito_InMovimento(char ostacolo, int riga, int colonna) {
-
-	bool meno_punti = false;
-
-	switch (ostacolo) {
-
-	case('O'):
-	case('E'): //OSTACOLI COMUNI
-
-		if (!immunità) {
-
-			campo::punti = campo::punti - (10 * campo::livello);
-			if (campo::punti <= 0)
-				campo::sconfitta();
-			
-			meno_punti = true;
-		}
-		else
-			campo::immunità = false;
-		break;
-
-	case('?'): //MACCHINA NEMICA
-
-		if (!immunità) {
-			campo::punti = campo::punti - 10;
-			if (campo::punti <= 0)
-				campo::sconfitta();
-
-			meno_punti = true;
-		}
-		else
-			campo::immunità = false;
-
-		//Cancello l'ostacolo macchina
-
-		if (campo::spazio[riga][colonna - 1] == 'V') { //colpito da macchina tutta a sinistra
-
-			campo::spazio[riga][colonna - 1] = ' ';
-			campo::spazio[riga][colonna - 2] = ' ';
-			campo::spazio[riga - 1][colonna - 1] = ' ';
-			campo::spazio[riga + 1][colonna - 1] = ' ';
-
-		}
-		else if (campo::spazio[riga][colonna + 1] == 'V') { //colpito da macchina tutta a destra 
-
-
-			campo::spazio[riga][colonna + 1] = ' ';
-			campo::spazio[riga][colonna + 2] = ' ';
-			campo::spazio[riga + 1][colonna + 1] = ' ';
-			campo::spazio[riga - 1][colonna + 1] = ' ';
-
-		}
-		else { //colpito da macchina parzialmente a destra o a sinistra o sopra
-			campo::spazio[riga - 1][colonna] = ' ';
-			campo::spazio[riga - 2][colonna] = ' ';
-		}
-
-		if (campo::spazio[riga - 1][colonna + 1] == '*') { //colpito da sinistra
-			campo::spazio[riga - 1][colonna - 1] = ' ';
-			campo::spazio[riga - 1][colonna + 1] = '*';
-		}
-		else if (campo::spazio[riga - 1][colonna - 1] == '*') { //colpito da destra
-			campo::spazio[riga - 1][colonna + 1] = ' ';
-			campo::spazio[riga - 1][colonna - 1] = '*';
-		}
-		else { //colpito da sopra
-			campo::spazio[riga - 1][colonna - 1] = ' ';
-			campo::spazio[riga - 1][colonna + 1] = ' ';
-		}
-
-		break;
-
-	case('V'): //MACCHINA NEMICA
-
-
-		if (!immunità) {
-			campo::punti = campo::punti - 10;
-			if (campo::punti <= 0)
-				campo::sconfitta();
-
-			meno_punti = true;
-		}
-		else
-			campo::immunità = false;
-
-		//Cancello l'ostacolo macchina
-
-		if (campo::spazio[riga][colonna + 1] == 'A' || campo::spazio[riga][colonna - 1] == 'A') { //colpito da sinistra
-
-			campo::spazio[riga - 1][colonna] = ' ';
-			campo::spazio[riga + 1][colonna] = ' ';
-			campo::spazio[riga][colonna - 1] = ' ';
-			campo::spazio[riga][colonna + 1] = 'A';
-		}
-		else { //colpito da sopra
-			campo::spazio[riga - 1][colonna] = ' ';
-			campo::spazio[riga][colonna + 1] = ' ';
-			campo::spazio[riga][colonna - 1] = ' ';
-		}
-
-
-		break;
-
-	case('S'): //IMMUNITA'
-
-		campo::immunità = true;
-		break;
-
-	case('B'): //BENZINA
-
-		campo::benzina = campo::benzina + 50;
-		if (campo::benzina > 100)
-			campo::benzina = 101;
-
-		cout << "PIU' BENZINA!!";
-		break;
-
-	default:
-		break;
-	}
-
-	if(!meno_punti)
-		campo::punti = campo::punti + 1;
-
-	if (campo::punti < 100)
-		campo::livello = 1;
-	else
-		campo::livello = campo::punti / 100;
-}
-*/
 
 // Lettere utilizzate = O E S T V
 
