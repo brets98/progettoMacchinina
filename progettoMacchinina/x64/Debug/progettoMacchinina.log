@@ -1,3 +1,6 @@
-﻿  Source.cpp
-g:\programmi\progettomacchinina\progettomacchinina\progettomacchinina\source.cpp(10): warning C4101: 'direzione': unreferenced local variable
+﻿  campo.cpp
+g:\programmi\progettomacchinina\progettomacchinina\progettomacchinina\campo.cpp(81): warning C4309: '=': truncation of constant value
+g:\programmi\progettomacchinina\progettomacchinina\progettomacchinina\campo.cpp(85): warning C4309: '=': truncation of constant value
+g:\programmi\progettomacchinina\progettomacchinina\progettomacchinina\campo.cpp(474): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+g:\programmi\progettomacchinina\progettomacchinina\progettomacchinina\campo.cpp(588): warning C4101: 'pos_ostacolo': unreferenced local variable
   progettoMacchinina.vcxproj -> G:\Programmi\progettoMacchinina\progettoMacchinina\x64\Debug\progettoMacchinina.exe

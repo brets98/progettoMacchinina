@@ -1,4 +1,5 @@
 #include "campo.h"
+#include <windows.h>
 #include <cstdlib>
 
 campo::campo(int a, int b, int p, int l, bool im) {
@@ -168,8 +169,7 @@ void campo::cosaMiHaColpito(bool* preso, int riga, int colonna) {
 				if (campo::punti <= 0)
 					campo::sconfitta();
 				cout << "HAI PRESO UNA BUCA, -" << 1 * campo::livello << " PUNTI";
-				system("pause");
-
+				Sleep(200);
 
 			}
 			else
@@ -185,7 +185,9 @@ void campo::cosaMiHaColpito(bool* preso, int riga, int colonna) {
 				if (campo::punti <= 0)
 					campo::sconfitta();
 				cout << "HAI COLPITO UN OSTACOLO, -" << 10 * campo::livello << " PUNTI" << endl;
-				system("pause");
+				Sleep(200);
+
+
 
 			}
 			else
@@ -195,13 +197,12 @@ void campo::cosaMiHaColpito(bool* preso, int riga, int colonna) {
 			case('?'): //MACCHINA NEMICA
 
 			if (!immunità) {
-				campo::punti = campo::punti - 10;
+				campo::punti = campo::punti - (30 * campo::livello);
 				*preso = true;
 				if (campo::punti <= 0)
 					campo::sconfitta();
-				cout << "HAI COLPITO UNA MACCHINA NEMICA, -10 PUNTI" << endl;
-				system("pause");
-
+				cout << "HAI COLPITO UNA MACCHINA NEMICA, -" << (30 * campo::livello) << " PUNTI" << endl;
+				Sleep(200);
 			}
 			else
 				campo::immunità = false;
@@ -251,12 +252,13 @@ void campo::cosaMiHaColpito(bool* preso, int riga, int colonna) {
 
 
 			if (!immunità) {
-				campo::punti = campo::punti - 10;
+				campo::punti = campo::punti - (30 * campo::livello);
 				*preso = true;
 				if (campo::punti <= 0)
 					campo::sconfitta();
-				cout << "HAI COLPITO UNA MACCHINA NEMICA, -10 PUNTI" << endl;
-				system("pause");
+				cout << "HAI COLPITO UNA MACCHINA NEMICA, -"<< (30 * campo::livello)<<" PUNTI" << endl;
+				Sleep(200);
+
 
 			}
 			else
@@ -288,7 +290,7 @@ void campo::cosaMiHaColpito(bool* preso, int riga, int colonna) {
 
 			campo::immunità = true;
 			cout << "IMMUNITA' ATTIVATA" << endl;
-			system("pause");
+			Sleep(200);
 
 			break;
 
@@ -299,7 +301,8 @@ void campo::cosaMiHaColpito(bool* preso, int riga, int colonna) {
 				campo::benzina = 101;
 
 			cout << "PIU' BENZINA!!" << endl;
-			system("pause");
+			Sleep(200);
+
 
 			break;
 
