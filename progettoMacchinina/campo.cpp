@@ -167,6 +167,10 @@ void campo::cosaMiHaColpito(bool* preso, int riga, int colonna) {
 				*preso = true;
 				if (campo::punti <= 0)
 					campo::sconfitta();
+				cout << "HAI PRESO UNA BUCA, -" << 1 * campo::livello << " PUNTI";
+				system("pause");
+
+
 			}
 			else
 				campo::immunità = false;
@@ -180,6 +184,9 @@ void campo::cosaMiHaColpito(bool* preso, int riga, int colonna) {
 				*preso = true;
 				if (campo::punti <= 0)
 					campo::sconfitta();
+				cout << "HAI COLPITO UN OSTACOLO, -" << 10 * campo::livello << " PUNTI" << endl;
+				system("pause");
+
 			}
 			else
 				campo::immunità = false;
@@ -192,6 +199,9 @@ void campo::cosaMiHaColpito(bool* preso, int riga, int colonna) {
 				*preso = true;
 				if (campo::punti <= 0)
 					campo::sconfitta();
+				cout << "HAI COLPITO UNA MACCHINA NEMICA, -10 PUNTI" << endl;
+				system("pause");
+
 			}
 			else
 				campo::immunità = false;
@@ -245,6 +255,9 @@ void campo::cosaMiHaColpito(bool* preso, int riga, int colonna) {
 				*preso = true;
 				if (campo::punti <= 0)
 					campo::sconfitta();
+				cout << "HAI COLPITO UNA MACCHINA NEMICA, -10 PUNTI" << endl;
+				system("pause");
+
 			}
 			else
 				campo::immunità = false;
@@ -274,6 +287,9 @@ void campo::cosaMiHaColpito(bool* preso, int riga, int colonna) {
 		case('S'): //IMMUNITA'
 
 			campo::immunità = true;
+			cout << "IMMUNITA' ATTIVATA" << endl;
+			system("pause");
+
 			break;
 
 		case('B'): //BENZINA
@@ -282,7 +298,9 @@ void campo::cosaMiHaColpito(bool* preso, int riga, int colonna) {
 			if (campo::benzina > 100)
 				campo::benzina = 101;
 
-			cout << "PIU' BENZINA!!";
+			cout << "PIU' BENZINA!!" << endl;
+			system("pause");
+
 			break;
 
 		default:
