@@ -9,7 +9,7 @@ int main() {
 	bool logical = true;
 	char direzione;
 	bool sconfitta = false;
-	int sino = 1;
+	char sino;
 
 	campo i(30, 40, 0, 1, false);
 	i.sigla();
@@ -36,11 +36,9 @@ int main() {
 			}
 
 
-			cout << "Premere 0  tasto per giocare di nuovo" << endl;
-			cin >> sino;
-			if (sino == 0)
-				logical = true;
-			else
+			cout << "Premere un qualsiasi tasto per uscire o 0 per giocare di nuovo " << endl;
+			sino = _getch();
+			if (sino != '0')
 				logical = false;
 			//system("pause");
 			

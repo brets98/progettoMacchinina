@@ -385,26 +385,26 @@ void campo::colpito() {  // per farlo un po piú carino si puó scrivere un funzio
 
 
 void campo::aggiungiOstacoli() {
-	int limiteSotto = 2;
+	int limiteSotto = 2; // limiti all'interno dei quali posso essere caricati degli ostacoli 
 	int limiteSopra = 22;
 	srand(time(NULL));
 
-	if (campo::flagMacchina == 1) {
+	if (campo::flagMacchina == 1) { // nel caso in cui al turno precedente stampa una macchina questa stampa la parte centrale e non viene contata nelle linee di spazio tra un ostacolo e l'altro
 		campo::spazio[1][campo::posMacchinaCattiva] = 'V';
 		campo::spazio[1][campo::posMacchinaCattiva + 1] = '?';
 		campo::spazio[1][campo::posMacchinaCattiva - 1] = '?';
 		campo::flagMacchina = 2;
 	}
-	else if (campo::flagMacchina == 2) {
+	else if (campo::flagMacchina == 2) { // ultima fase della stampa della macchina nemica
 		campo::spazio[1][campo::posMacchinaCattiva] = '?';
 		campo::flagMacchina = 0;
 	}
-	else if (campo::righeDiff == 0) {
+	else if (campo::righeDiff == 0) {// ho finito di stampare tutta la macchina nemica oppure non devo stamparla quindi decido che altro ostacolo posizionare
 		campo::righeDiff = 4 - campo::livello;
 		int j;// decide dove piazzare l'ostacolo
 		int b;// decide che far stampare
 		char ost = ' ';
-		b = 1 + rand() % 5;
+		b = 1 + rand() % 5; // casualmente scegli quale ostacolo posizionare
 		switch (b) {
 		case 1:
 			ost = 'O';
@@ -422,7 +422,7 @@ void campo::aggiungiOstacoli() {
 			limiteSotto = 3;
 			limiteSopra = 21;
 				ost = '?';
-				campo::flagMacchina = 1;
+				campo::flagMacchina = 1; // flag che mi dice se sto stampando una maccina nemica ( servono tre giri per stampare una maccina
 			break;
 		}
 		j = limiteSotto + rand() % limiteSopra;
@@ -435,7 +435,7 @@ void campo::aggiungiOstacoli() {
 		campo::righeDiff = campo::righeDiff - 1;
 	}
 }
-void campo::scriviMacchina()
+void campo::scriviMacchina() //sistema gli asterischi attorno alla macchina
 {
 	colpito();
 	campo::benzina--;
@@ -505,11 +505,12 @@ void campo::muoviMacchina(char l) {
 
 	p_vett = memOstacoli(vett_ostacoli);
 
+	// se prendo in input una di queste lettere devo muovere la macchina 
 	if (l == 'a' || l == 'A' || l == 'd' || l == 'D' || l == 'w' || l == 'W') {
 		
 		switch (l) {
 		case ('a'):
-		case('A'):
+		case('A'): //sinistra
 			if (campo::spazio[campo::macchina.riga][campo::macchina.colonna - 2] != '#')
 			{
 
@@ -529,7 +530,7 @@ void campo::muoviMacchina(char l) {
 			break;
 
 		case('d'):
-		case('D'): // qua vanno aggiunti i controlli di collisione
+		case('D'): //destra
 			if (campo::spazio[campo::macchina.riga][campo::macchina.colonna + 2] != '#') {
 
 				campo::spazio[campo::macchina.riga - 1][campo::macchina.colonna] = vett_ostacoli[0]; //Stellina sopra
@@ -546,7 +547,7 @@ void campo::muoviMacchina(char l) {
 			break;
 
 		case('w'):
-		case('W'):
+		case('W')://avanti
 			scriviMacchina();
 			break;
 		}
